@@ -19,7 +19,6 @@ class PlaceOrder {
         ImportDataForOrders data = new ImportDataForOrders();
         int i = 0;
         for (; i < data.getOrderSequence().length; i++) {
-            System.setProperty("webdriver.chrome.driver", "C:\\SeleniumDrivers\\chromedriver.exe");
             WebDriver driver = new ChromeDriver();
             try {
                 new OrderCreation(
