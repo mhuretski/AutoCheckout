@@ -5,9 +5,9 @@ import ImportExport.OrderLogging;
 import Logic.OrderCreation;
 import Pages.Basket;
 import Pages.Loyalty;
-import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Test;
 
 import java.io.IOException;
 
@@ -20,7 +20,7 @@ class PlaceOrder {
         ImportDataForOrders data = new ImportDataForOrders();
         int i = 0;
         for (; i < data.getOrderSequence().length; i++) {
-//            System.setProperty("webdriver.chrome.driver", "C:\\SeleniumDrivers\\chromedriver.exe");
+          System.setProperty("webdriver.chrome.driver", "C:\\SeleniumDrivers\\chromedriver.exe");
             WebDriver driver = new ChromeDriver();
             try {
                 new OrderCreation(
