@@ -12,7 +12,6 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 
 
-
 class PlaceOrder {
 
     @Test
@@ -20,7 +19,7 @@ class PlaceOrder {
         ImportDataForOrders data = new ImportDataForOrders();
         int i = 0;
         for (; i < data.getOrderSequence().length; i++) {
-//          System.setProperty("webdriver.chrome.driver", "C:\\SeleniumDrivers\\chromedriver.exe");
+            System.setProperty("webdriver.chrome.driver", "C:\\SeleniumDrivers\\chromedriver.exe");
             WebDriver driver = new ChromeDriver();
             try {
                 new OrderCreation(
