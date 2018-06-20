@@ -20,6 +20,7 @@ class PlaceOrder {
         int i = 0;
         for (; i < data.getOrderSequence().length; i++) {
             WebDriver driver = new ChromeDriver();
+            
             try {
                 new OrderCreation(
                         data.getOrderSequence()[i],
