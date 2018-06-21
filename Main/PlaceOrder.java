@@ -20,7 +20,7 @@ class PlaceOrder {
         int i = 0;
         for (; i < data.getOrderSequence().length; i++) {
             WebDriver driver = new ChromeDriver();
-            
+
             try {
                 new OrderCreation(
                         data.getOrderSequence()[i],
@@ -35,6 +35,7 @@ class PlaceOrder {
                         data.getLoyaltyCard()[i],
                         driver);
             } catch (Exception e) {
+                e.printStackTrace();
                 driver.quit();
                 for (int j = 0; j < 10; j++) {
                     new Basket().remove(data.getSite()[i], data.getOrderSequence()[i]);
