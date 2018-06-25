@@ -33,7 +33,6 @@ public class PDP {
             amountOfItemsToAdd(itemQty[i], driver);
             addToBasket(driver);
         }
-
     }
 
 }

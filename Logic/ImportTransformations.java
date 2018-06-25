@@ -76,9 +76,9 @@ public class ImportTransformations {
     }
 
     private void showArray(String[][] array){
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                System.out.print(array[i][j] + " ");
+        for (String[] anArray : array) {
+            for (String anAnArray : anArray) {
+                System.out.print(anAnArray + " ");
             }
             System.out.println("");
         }

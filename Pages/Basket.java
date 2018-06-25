@@ -26,13 +26,13 @@ public class Basket {
 
     }
 
-    public void remove(String site) throws InterruptedException {
+    public void remove(String username, String password, String site) throws InterruptedException {
         WebDriver driver = new ChromeDriver();
-        removeItems(site, driver);
+        removeItems(username, password, site, driver);
         driver.quit();
     }
 
-    private void removeItems(String site, WebDriver driver) throws InterruptedException {
+    private void removeItems(String username, String password, String site, WebDriver driver) throws InterruptedException {
 
         do {
             open(site, driver);
@@ -40,7 +40,7 @@ public class Basket {
         while (driver.findElements(By.xpath("//pre[text()[contains(.,'Your session expired due to inactivity')]]")).size() != 0);
 
         if (driver.findElements(By.xpath("//a[contains(@class,'lnk-not-you')]")).size() == 0)
-            new Login(site, driver);
+            new Login(username, password, site, driver);
 
         open(site, driver);
         new Loyalty().removeLoyaltyCard(driver);
@@ -58,7 +58,7 @@ public class Basket {
         return driver.findElements(By.xpath("//section[contains(@class,'s-basket s-basket-empty')]")).size() == 0;
     }
 
-    public Basket(String[] healthboxItem, int[] healthboxItemQty, String site, WebDriver driver) throws InterruptedException {
+    public Basket(String[] healthboxItem, int[] healthboxItemQty, String site, WebDriver driver) {
         open(site, driver);
         addItem(healthboxItem, healthboxItemQty, driver);
     }

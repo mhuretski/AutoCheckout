@@ -59,8 +59,11 @@ public class Payment {
 
     public Payment(WebDriver driver) throws InterruptedException {
         payByCard(driver);
+
+        /*Depends on site configuration*/
 //        agreeToTerms(driver);
 //        enterBillingSection(driver);
+
         goToPayment(driver);
         pay(driver);
     }

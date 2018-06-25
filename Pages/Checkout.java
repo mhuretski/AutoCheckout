@@ -24,16 +24,12 @@ public class Checkout {
                 .click();
     }
 
-    public Checkout(String site, WebDriver driver){
+    public Checkout(String site, WebDriver driver) {
         open(site, driver);
-/*for the first order*/
-//        try {
-//            chooseAddress(driver);
-//            chooseDeliveryButton(driver);
-//        }
-//        catch (Exception e){
-//            System.out.println("Looks as delivery is passed");
-//        }
+        /*for the first order*/
+//        chooseAddress(driver);
+//        chooseDeliveryButton(driver);
+
         continueToPayment(driver);
     }
 }

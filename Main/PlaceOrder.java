@@ -1,20 +1,17 @@
 package Main;
 
 import ImportExport.ImportDataForOrders;
-import ImportExport.OrderLogging;
+import Logic.ErrorHandling;
 import Logic.OrderCreation;
-import Pages.Basket;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.Test;
-
-import java.io.IOException;
 
 
 class PlaceOrder {
 
     @Test
-    void placeOrders() throws IOException, InterruptedException {
+    void placeOrders() {
         ImportDataForOrders data = new ImportDataForOrders();
 
         int amountOfAttemptsBeforeExit = 10;
@@ -22,7 +19,6 @@ class PlaceOrder {
         for (; i < data.getOrderSequence().length; i++) {
             if (amountOfAttemptsBeforeExit >= 0) {
                 WebDriver driver = new ChromeDriver();
-
                 try {
                     new OrderCreation(
                             data.getOrderSequence()[i],
@@ -35,16 +31,22 @@ class PlaceOrder {
                             data.getSite()[i],
                             data.getNewLoyaltyUser()[i],
                             data.getLoyaltyCard()[i],
+                            data.getUsername()[i],
+                            data.getPassword()[i],
                             driver);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    driver.quit();
-                    new Basket().remove(data.getSite()[i]);
-                    new OrderLogging("fail", data.getOrderSequence()[i], driver);
+                } catch (InterruptedException exception) {
+                    new ErrorHandling(
+                            data.getOrderSequence()[i],
+                            data.getSite()[i],
+                            data.getUsername()[i],
+                            data.getPassword()[i],
+                            exception,
+                            driver);
                     i--;
                     amountOfAttemptsBeforeExit--;
                 }
             }
         }
     }
+
 }

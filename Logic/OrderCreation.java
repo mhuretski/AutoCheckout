@@ -4,8 +4,6 @@ import ImportExport.OrderLogging;
 import Pages.*;
 import org.openqa.selenium.WebDriver;
 
-import java.io.IOException;
-
 public class OrderCreation {
 
     public OrderCreation(int orderSequence,
@@ -18,10 +16,12 @@ public class OrderCreation {
                          String site,
                          String newLoyaltyUser,
                          String loyaltyCard,
-                         WebDriver driver) throws IOException, InterruptedException {
+                         String username,
+                         String password,
+                         WebDriver driver) throws InterruptedException {
 
         new Driver(driver);
-        new Login(site, driver);
+        new Login(username, password, site, driver);
 
         /*add healthbox items*/
         boolean isHealthbox = healthbox == 1 || healthbox == 2 || healthbox == 3 || healthbox == 4;

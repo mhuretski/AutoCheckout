@@ -12,14 +12,21 @@ public class OrderLogging {
         return new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\Maksim_Huretski\\Desktop\\Everest\\OrderNumber.txt", true)));
     }
 
-    public OrderLogging(String success, int orderSequence, WebDriver driver) throws IOException {
+    public OrderLogging(String success, int orderSequence, WebDriver driver) {
 
-        PrintWriter writer = writer();
-        if (success.equals("success")) {
-            WebElement orderNumber = driver.findElement(By.xpath("//span[contains(@class,'bold order-number')]"));
-            writer.append(String.valueOf(orderSequence)).append(" ").append(orderNumber.getText()).println("");
-        } else
-            writer.append(String.valueOf(orderSequence)).append(" ").append("Order isn't placed.").println("");
-        writer.close();
+        try {
+            PrintWriter writer = writer();
+            if (success.equals("success")) {
+                WebElement orderNumber = driver.findElement(By.xpath("//span[contains(@class,'bold order-number')]"));
+                writer.append(String.valueOf(orderSequence)).append(" ").append(orderNumber.getText()).println("");
+            } else if (success.equals("basket")) {
+                writer.append("Basket isn't emptied.").println("");
+            } else
+                writer.append(String.valueOf(orderSequence)).append(" ").append("Order isn't placed.").println("");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 }

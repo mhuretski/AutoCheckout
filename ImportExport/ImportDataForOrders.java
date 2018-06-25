@@ -20,8 +20,10 @@ public class ImportDataForOrders {
     private String[] site;
     private String[] newLoyaltyUser;
     private String[] loyaltyCard;
+    private String[] username;
+    private String[] password;
 
-    public ImportDataForOrders() throws IOException {
+    public ImportDataForOrders() {
 
         LinkedList<String> orderSequenceList = new LinkedList<String>();
         LinkedList<String> healthboxList = new LinkedList<String>();
@@ -33,27 +35,35 @@ public class ImportDataForOrders {
         LinkedList<String> siteList = new LinkedList<String>();
         LinkedList<String> newLoyaltyUserList = new LinkedList<String>();
         LinkedList<String> loyaltyCardList = new LinkedList<String>();
+        LinkedList<String> usernameList = new LinkedList<String>();
+        LinkedList<String> passwordList = new LinkedList<String>();
 
         String csvFile = "C:\\Users\\Maksim_Huretski\\Desktop\\Everest\\orders_source.csv";
-
-        CSVReader reader;
-        reader = new CSVReader(new FileReader(csvFile));
-        String[] line;
-        for (int i = 0; (line = reader.readNext()) != null; i++) {
-            if (i != 0) {
-                orderSequenceList.add(line[0]);
-                healthboxList.add(line[1]);
-                healthboxItemList.add(line[2]);
-                healthboxItemQtyList.add(line[3]);
-                normalItemList.add(line[4]);
-                normalItemQtyStringList.add(line[5]);
-                hbPlusList.add(line[6]);
-                siteList.add(line[7]);
-                newLoyaltyUserList.add(line[8]);
-                loyaltyCardList.add(line[9]);
+        try {
+            CSVReader reader;
+            reader = new CSVReader(new FileReader(csvFile));
+            String[] line;
+            for (int i = 0; (line = reader.readNext()) != null; i++) {
+                if (i != 0) {
+                    orderSequenceList.add(line[0]);
+                    healthboxList.add(line[1]);
+                    healthboxItemList.add(line[2]);
+                    healthboxItemQtyList.add(line[3]);
+                    normalItemList.add(line[4]);
+                    normalItemQtyStringList.add(line[5]);
+                    hbPlusList.add(line[6]);
+                    siteList.add(line[7]);
+                    newLoyaltyUserList.add(line[8]);
+                    loyaltyCardList.add(line[9]);
+                    usernameList.add(line[10]);
+                    passwordList.add(line[11]);
+                }
             }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
         }
-        reader.close();
 
         ImportTransformations transform = new ImportTransformations();
         this.orderSequence = transform.transformToArrayOneInt(orderSequenceList);
@@ -66,10 +76,12 @@ public class ImportDataForOrders {
         this.site = transform.transformToArrayOneString(siteList);
         this.newLoyaltyUser = transform.transformToArrayOneString(newLoyaltyUserList);
         this.loyaltyCard = transform.transformToArrayOneString(loyaltyCardList);
+        this.username = transform.transformToArrayOneString(usernameList);
+        this.password = transform.transformToArrayOneString(passwordList);
 
     }
 
-    public int[] getOrderSequence(){
+    public int[] getOrderSequence() {
         return orderSequence;
     }
 
@@ -107,5 +119,13 @@ public class ImportDataForOrders {
 
     public String[] getLoyaltyCard() {
         return loyaltyCard;
+    }
+
+    public String[] getUsername() {
+        return username;
+    }
+
+    public String[] getPassword() {
+        return password;
     }
 }
