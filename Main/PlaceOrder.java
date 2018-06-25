@@ -39,7 +39,7 @@ class PlaceOrder {
                 } catch (Exception e) {
                     e.printStackTrace();
                     driver.quit();
-                    new Basket().remove(data.getSite()[i], data.getOrderSequence()[i]);
+                    new Basket().remove(data.getSite()[i]);
                     new OrderLogging("fail", data.getOrderSequence()[i], driver);
                     i--;
                     amountOfAttemptsBeforeExit--;

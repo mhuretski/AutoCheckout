@@ -10,7 +10,9 @@ import static java.lang.Thread.sleep;
 public class Payment {
 
     private void payByCard(WebDriver driver) throws InterruptedException {
+        sleep(3000);
         WebElement wtf = driver.findElement(By.xpath("//p[starts-with(., 'Card')]"));
+        sleep(3000);
         wtf.click();
     }
 
@@ -24,20 +26,17 @@ public class Payment {
                 .click();
     }
 
-    private void goToPayment(WebDriver driver) throws InterruptedException {
-        try {
-            driver.findElement(By.xpath("//button[contains(@class,'btn btn-primary checkout-submit-btn js-checkout-billing-address-submit js-adyen-payment-submit')]"))
-                    .click();
-        } catch (Exception e){
-            System.out.println("Couldn't proceed to payment.");
-        }
+    private void goToPayment(WebDriver driver) {
+        driver.findElement(By.xpath("//button[contains(@class,'btn btn-primary checkout-submit-btn js-checkout-billing-address-submit js-adyen-payment-submit')]"))
+                .click();
+
     }
 
     private void pay(WebDriver driver) throws InterruptedException {
 
+        sleep(3000);
         WebElement paymentFrame = driver.findElement(By.xpath("//iframe[@allowtransparency='true']"));
         driver.switchTo().frame(paymentFrame);
-
         sleep(3000);
 
         WebElement cardNumber = driver.findElement(By.cssSelector("input#payment-cardnumber"));
