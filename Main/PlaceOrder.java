@@ -34,16 +34,19 @@ class PlaceOrder {
                             data.getUsername()[i],
                             data.getPassword()[i],
                             driver);
-                } catch (InterruptedException exception) {
-                    new ErrorHandling(
-                            data.getOrderSequence()[i],
-                            data.getSite()[i],
-                            data.getUsername()[i],
-                            data.getPassword()[i],
-                            exception,
-                            driver);
-                    i--;
-                    amountOfAttemptsBeforeExit--;
+                } catch (Exception exception) {
+                    if (exception instanceof org.openqa.selenium.NoSuchElementException || exception instanceof InterruptedException) {
+                        new ErrorHandling(
+                                data.getOrderSequence()[i],
+                                data.getSite()[i],
+                                data.getUsername()[i],
+                                data.getPassword()[i],
+                                exception,
+                                driver);
+                        i--;
+                        amountOfAttemptsBeforeExit--;
+                    }
+                    else new ErrorHandling(exception, driver);
                 }
             }
         }

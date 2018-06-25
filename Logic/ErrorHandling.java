@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 
 public class ErrorHandling {
 
-    private void handle(int orderSequence, String site, String username, String password, InterruptedException e, WebDriver driver) {
+    private void handle(int orderSequence, String site, String username, String password, Exception e, WebDriver driver) {
 
         e.printStackTrace();
         driver.quit();
@@ -19,7 +19,13 @@ public class ErrorHandling {
 
     }
 
-    public ErrorHandling(int orderSequence, String site, String username, String password, InterruptedException e, WebDriver driver) {
+    public ErrorHandling(Exception e, WebDriver driver){
+        System.err.println("Something went wrong.");
+        e.printStackTrace();
+        driver.quit();
+    }
+
+    public ErrorHandling(int orderSequence, String site, String username, String password, Exception e, WebDriver driver) {
         handle(orderSequence, site, username, password, e, driver);
     }
 }
