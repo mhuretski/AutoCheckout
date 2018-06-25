@@ -19,12 +19,14 @@ public class Basket {
         driver.get(new Site().chosenSite(site) + "basket/basket.jsp");
     }
 
-    private void addItem(String[] healthboxItem, int[] healthboxItemQty, WebDriver driver) {
+    private void addItem(String[] healthboxItem, int[] healthboxItemQty, WebDriver driver) throws InterruptedException {
 
         for (int i = 0; i < healthboxItem.length; i++) {
             WebElement itemQty = driver.findElement(By.xpath("//span[starts-with(., '" + healthboxItem[i] + "')]/ancestor::article//dl[contains(@class, 'l-col quantity mobile-hidden')]//button[@type='button'][contains(@class, 'plus')]"));
-            for (int j = 0; j < healthboxItemQty[i] - 1; j++)
+            for (int j = 0; j < healthboxItemQty[i] - 1; j++) {
                 itemQty.click();
+                sleep(3000);
+            }
         }
 
     }
@@ -36,34 +38,38 @@ public class Basket {
     }
 
     private void removeItems(String site, int orderSequence, WebDriver driver) throws InterruptedException, IOException {
-
         open(site, driver);
-        if (isBasketNotEmpty(driver)) {
+
+        while (driver.findElements(By.xpath("//pre[text()[contains(.,'Your session expired due to inactivity')]]")).size() != 0) {
             open(site, driver);
-            if (isBasketNotEmpty(driver)) {
-                WebElement itemsToRemove = driver.findElement(By.xpath("//dl[contains(@class, 'l-col quantity mobile-hidden')]//a[contains(@class,'act-remove removeCartItem')]"));
-                itemsToRemove.click();
-                sleep(3000);
-                this.attemptsToClearBasket++;
-                try {
-                    if (this.attemptsToClearBasket < 10) {
-                        removeItems(site, orderSequence, driver);
-                    }
-                } catch (Exception e) {
-                    System.err.println("Basket isn't cleaned");
-                    new OrderLogging("fail", orderSequence, driver);
-                    System.exit(1);
-                }
-            }
         }
+
+        new Loyalty().removeLoyaltyCard(driver);
+
+        if (!isBasketEmpty(driver)) {
+            WebElement itemsToRemove = driver.findElement(By.xpath("//dl[contains(@class, 'l-col quantity mobile-hidden')]//a[contains(@class,'act-remove removeCartItem')]"));
+            itemsToRemove.click();
+            sleep(3000);
+            this.attemptsToClearBasket++;
+            try {
+                if (this.attemptsToClearBasket < 10) {
+                    removeItems(site, orderSequence, driver);
+                }
+            } catch (Exception e) {
+                System.err.println("Basket isn't cleaned");
+                new OrderLogging("fail", orderSequence, driver);
+                System.exit(1);
+            }
+
+        }
+
     }
 
-    private boolean isBasketNotEmpty(WebDriver driver) {
-        boolean wtf = driver.findElements(By.cssSelector(".s-basket.s-basket-empty")).size() != 0;
-        return !wtf;
+    private boolean isBasketEmpty(WebDriver driver) {
+        return driver.findElements(By.cssSelector(".s-basket.s-basket-empty")).size() == 0;
     }
 
-    public Basket(String[] healthboxItem, int[] healthboxItemQty, String site, WebDriver driver) {
+    public Basket(String[] healthboxItem, int[] healthboxItemQty, String site, WebDriver driver) throws InterruptedException {
         open(site, driver);
         addItem(healthboxItem, healthboxItemQty, driver);
     }

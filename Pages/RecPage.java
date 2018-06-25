@@ -39,8 +39,11 @@ public class RecPage {
         if (healthbox == 1) {
             addToBasketFromCarousel(itemId, driver);
         }
-        else if(healthbox == 3) {
+        if(healthbox == 3) {
             openNormalHealthbox(driver);
+            addToBasketNormalHealthbox(itemId, driver);
+        }
+        if(healthbox == 4) {
             addToBasketNormalHealthbox(itemId, driver);
         }
     }

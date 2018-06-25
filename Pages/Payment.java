@@ -10,9 +10,7 @@ import static java.lang.Thread.sleep;
 public class Payment {
 
     private void payByCard(WebDriver driver) throws InterruptedException {
-        sleep(3000);
         WebElement wtf = driver.findElement(By.xpath("//p[starts-with(., 'Card')]"));
-        sleep(3000);
         wtf.click();
     }
 
@@ -27,7 +25,6 @@ public class Payment {
     }
 
     private void goToPayment(WebDriver driver) throws InterruptedException {
-        sleep(3000);
         try {
             driver.findElement(By.xpath("//button[contains(@class,'btn btn-primary checkout-submit-btn js-checkout-billing-address-submit js-adyen-payment-submit')]"))
                     .click();
@@ -63,8 +60,8 @@ public class Payment {
 
     public Payment(WebDriver driver) throws InterruptedException {
         payByCard(driver);
-        agreeToTerms(driver);
-        enterBillingSection(driver);
+//        agreeToTerms(driver);
+//        enterBillingSection(driver);
         goToPayment(driver);
         pay(driver);
     }

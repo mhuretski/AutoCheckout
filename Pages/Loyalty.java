@@ -14,7 +14,7 @@ public class Loyalty {
         driver.findElement(By.id("addRflCard")).click();
     }
 
-    private void removeLoyaltyCard(WebDriver driver) {
+    void removeLoyaltyCard(WebDriver driver) {
         String removeCardSelector = "//a[@id='jsChangeRflCard']";
         if (driver.findElements(By.xpath(removeCardSelector)).size() > 0) {
             driver.findElement(By.xpath(removeCardSelector)).click();
@@ -23,7 +23,8 @@ public class Loyalty {
 
     public Loyalty(String site, WebDriver driver) {
         new Basket().open(site, driver);
-        removeLoyaltyCard(driver);
     }
 
+    Loyalty() {
+    }
 }

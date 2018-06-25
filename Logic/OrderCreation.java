@@ -24,7 +24,8 @@ public class OrderCreation {
         new Login(site, driver);
 
         /*add healthbox items*/
-        if (healthbox == 1 || healthbox == 2 || healthbox == 3 || healthboxItem.length == 1 && !healthboxItem[0].equals("-"))
+        boolean isHealthbox = healthbox == 1 || healthbox == 2 || healthbox == 3 || healthbox == 4;
+        if (isHealthbox || healthboxItem.length == 1 && !healthboxItem[0].equals("-"))
             new RecPage(healthbox, healthboxItem, site, driver);
         if (hbPlus.equals("+")) {
             new RecPagePlus(site, driver);
@@ -38,7 +39,7 @@ public class OrderCreation {
                 break;
             }
         }
-        if (multipleHealthboxItems)
+        if (multipleHealthboxItems && isHealthbox)
             new Basket(healthboxItem, healthboxItemQty, site, driver);
 
         /*add normal items*/
