@@ -27,9 +27,7 @@ public class OrderLogging {
                 WebElement orderNumber = driver.findElement(By.xpath("//span[contains(@class,'bold order-number')]"));
                 log.append(orderNumber.getText()).println("");
             } else if (success.equals("basket")) {
-                log.append("Basket isn't emptied.").println("");
-            } else if (success.equals("error")) {
-                log.append("Something went wrong.").println("");
+                log.append("Basket might not be empty.").println("");
             } else
                 log.append("Order isn't placed.").println("");
             writer.close();

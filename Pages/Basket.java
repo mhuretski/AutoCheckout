@@ -1,11 +1,10 @@
 package Pages;
 
+import Logic.DriverTiming;
 import Logic.Site;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-
-import static java.lang.Thread.sleep;
 
 public class Basket {
 
@@ -28,6 +27,7 @@ public class Basket {
 
     public void remove(String username, String password, String site) throws InterruptedException {
         WebDriver driver = new ChromeDriver();
+        new DriverTiming(4, driver);
         removeItems(username, password, site, driver);
         driver.quit();
     }
@@ -48,7 +48,6 @@ public class Basket {
         while (isBasketEmpty(driver)) {
             driver.findElement(By.xpath("//dl[contains(@class, 'l-col quantity mobile-hidden')]//a[contains(@class,'act-remove removeCartItem')]"))
                     .click();
-            sleep(500);
             driver.findElement(By.xpath("//div[contains(@class,'ajax-loader')][@style='display: none;']"));
 
         }

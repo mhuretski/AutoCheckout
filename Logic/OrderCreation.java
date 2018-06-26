@@ -20,7 +20,7 @@ public class OrderCreation {
                          String password,
                          WebDriver driver) throws InterruptedException {
 
-        new Driver(driver);
+        new DriverTiming(3, driver);
         new Login(username, password, site, driver);
 
         /*add healthbox items*/
@@ -56,6 +56,7 @@ public class OrderCreation {
             new Loyalty(site, driver).insertExistingLoyaltyCard(loyaltyCard, driver);
         }
 
+        new DriverTiming(20, driver);
         new Checkout(site, driver);
         new Payment(driver);
         new OrderLogging("success", orderSequence, driver);

@@ -18,12 +18,6 @@ public class ErrorHandling {
         }
     }
 
-    public ErrorHandling(int orderSequence, Exception e, WebDriver driver) {
-        new OrderLogging("error", orderSequence, driver);
-        e.printStackTrace();
-        driver.quit();
-    }
-
     public ErrorHandling(int orderSequence, String site, String username, String password, Exception e, WebDriver driver) {
         handle(orderSequence, site, username, password, e, driver);
     }

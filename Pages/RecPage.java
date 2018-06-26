@@ -24,8 +24,8 @@ public class RecPage {
     private void addToBasketNormalHealthbox(String[] arrayItemId, WebDriver driver) {
         for (String itemId : arrayItemId) {
             if (driver.findElements(By.xpath("//button[@type='submit'][@data-rr-sku-id='" + itemId + "']")).size() > 0) {
-                driver.findElement(By.xpath("//button[@type='submit'][@data-rr-sku-id='" + itemId + "']"))
-                        .click();
+                WebElement addToBasketIfFirstInDropdown = driver.findElement(By.xpath("//button[@type='submit'][@data-rr-sku-id='" + itemId + "']"));
+                addToBasketIfFirstInDropdown.click();
             } else {
                 /*find element*/
                 WebElement chosenContainerForItem = driver.findElement(By.xpath("//option[@data-sku-id='" + itemId + "']"));
@@ -36,9 +36,11 @@ public class RecPage {
                 Select dropdown = new Select(driver.findElement(By.xpath("//option[@data-sku-id='" + itemId + "']/ancestor::select")));
                 dropdown.selectByValue(getValue);
 
-                /*click "Add to Basket" using item attribute in dropdown*/
-                driver.findElement(By.xpath("//option[@data-sku-id='" + itemId + "']/ancestor::fieldset/fieldset"))
-                        .click();
+                /*wait till data is updated*/
+                if (driver.findElements(By.xpath("//option[@data-sku-id='" + itemId + "']/ancestor::fieldset//input[@value='" + itemId + "']")).size() > 0) {
+                    /*click "Add to Basket" using item attribute in dropdown*/
+                    driver.findElement(By.xpath("//option[@data-sku-id='" + itemId + "']/ancestor::fieldset/fieldset")).click();
+                }
             }
         }
     }

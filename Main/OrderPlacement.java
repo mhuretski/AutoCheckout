@@ -35,22 +35,19 @@ class OrderPlacement {
                             data.getPassword()[i],
                             driver);
                 } catch (Exception exception) {
-                    if (exception instanceof org.openqa.selenium.NoSuchElementException || exception instanceof InterruptedException) {
-                        new ErrorHandling(
-                                data.getOrderSequence()[i],
-                                data.getSite()[i],
-                                data.getUsername()[i],
-                                data.getPassword()[i],
-                                exception,
-                                driver);
-                        i--;
-                        amountOfAttemptsBeforeExit--;
-                    }else {
-                        new ErrorHandling(data.getOrderSequence()[i], exception, driver);
-                    }
+                    new ErrorHandling(
+                            data.getOrderSequence()[i],
+                            data.getSite()[i],
+                            data.getUsername()[i],
+                            data.getPassword()[i],
+                            exception,
+                            driver);
+                    i--;
+                    amountOfAttemptsBeforeExit--;
                 }
             }
         }
     }
-
 }
+
+
