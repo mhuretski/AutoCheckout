@@ -27,20 +27,20 @@ public class RecPage {
                 driver.findElement(By.xpath("//button[@type='submit'][@data-rr-sku-id='" + itemId + "']"))
                         .click();
             } else {
+                /*find element*/
                 WebElement chosenContainerForItem = driver.findElement(By.xpath("//option[@data-sku-id='" + itemId + "']"));
+                /*get its "value" parameter*/
                 String getValue = chosenContainerForItem.getAttribute("value");
 
+                /*select by value parameter*/
                 Select dropdown = new Select(driver.findElement(By.xpath("//option[@data-sku-id='" + itemId + "']/ancestor::select")));
                 dropdown.selectByValue(getValue);
 
+                /*click "Add to Basket" using item attribute in dropdown*/
                 driver.findElement(By.xpath("//option[@data-sku-id='" + itemId + "']/ancestor::fieldset/fieldset"))
                         .click();
-
             }
-
         }
-
-
     }
 
     private void addToBasketFromCarousel(String[] arrayItemId, WebDriver driver) {
