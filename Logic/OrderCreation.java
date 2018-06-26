@@ -10,8 +10,10 @@ public class OrderCreation {
                          int healthbox,
                          String[] healthboxItem,
                          int[] healthboxItemQty,
+                         String[] hbRepeatOrder,
                          String[] normalItem,
                          int[] normalItemQty,
+                         String[] normalRepeatOrder,
                          String hbPlus,
                          String site,
                          String newLoyaltyUser,
@@ -55,6 +57,9 @@ public class OrderCreation {
         if (!loyaltyCard.equals("-")) {
             new Loyalty(site, driver).insertExistingLoyaltyCard(loyaltyCard, driver);
         }
+
+        /*choose repeat order*/
+        new RepeatOrder(healthboxItem, hbRepeatOrder, normalItem, normalRepeatOrder, site, driver);
 
         new DriverTiming(20, driver);
         new Checkout(site, driver);

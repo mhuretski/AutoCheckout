@@ -14,8 +14,10 @@ public class ImportDataForOrders {
     private int[] healthbox;
     private String[][] healthboxItem;
     private int[][] healthboxItemQty;
+    private String[][] hbRepeatOrder;
     private String[][] normalItems;
     private int[][] normalItemsQty;
+    private String[][] normalRepeatOrder;
     private String[] hbPlus;
     private String[] site;
     private String[] newLoyaltyUser;
@@ -29,8 +31,10 @@ public class ImportDataForOrders {
         LinkedList<String> healthboxList = new LinkedList<String>();
         LinkedList<String> healthboxItemList = new LinkedList<String>();
         LinkedList<String> healthboxItemQtyList = new LinkedList<String>();
+        LinkedList<String> hbRepeatOrderList = new LinkedList<String>();
         LinkedList<String> normalItemList = new LinkedList<String>();
         LinkedList<String> normalItemQtyStringList = new LinkedList<String>();
+        LinkedList<String> normalRepeatOrderList = new LinkedList<String>();
         LinkedList<String> hbPlusList = new LinkedList<String>();
         LinkedList<String> siteList = new LinkedList<String>();
         LinkedList<String> newLoyaltyUserList = new LinkedList<String>();
@@ -49,14 +53,16 @@ public class ImportDataForOrders {
                     healthboxList.add(line[1]);
                     healthboxItemList.add(line[2]);
                     healthboxItemQtyList.add(line[3]);
-                    normalItemList.add(line[4]);
-                    normalItemQtyStringList.add(line[5]);
-                    hbPlusList.add(line[6]);
-                    siteList.add(line[7]);
-                    newLoyaltyUserList.add(line[8]);
-                    loyaltyCardList.add(line[9]);
-                    usernameList.add(line[10]);
-                    passwordList.add(line[11]);
+                    hbRepeatOrderList.add(line[4]);
+                    normalItemList.add(line[5]);
+                    normalItemQtyStringList.add(line[6]);
+                    normalRepeatOrderList.add(line[7]);
+                    hbPlusList.add(line[8]);
+                    siteList.add(line[9]);
+                    newLoyaltyUserList.add(line[10]);
+                    loyaltyCardList.add(line[11]);
+                    usernameList.add(line[12]);
+                    passwordList.add(line[13]);
                 }
             }
             reader.close();
@@ -70,8 +76,10 @@ public class ImportDataForOrders {
         this.healthbox = transform.transformToArrayOneInt(healthboxList);
         this.healthboxItem = transform.transformToArrayTwoWithZeros(healthboxItemList);
         this.healthboxItemQty = transform.transformToArrayTwoInt(healthboxItemQtyList);
+        this.hbRepeatOrder = transform.transformToArrayTwo(hbRepeatOrderList);
         this.normalItems = transform.transformToArrayTwoWithZeros(normalItemList);
         this.normalItemsQty = transform.transformToArrayTwoInt(normalItemQtyStringList);
+        this.normalRepeatOrder = transform.transformToArrayTwo(normalRepeatOrderList);
         this.hbPlus = transform.transformToArrayOneString(hbPlusList);
         this.site = transform.transformToArrayOneString(siteList);
         this.newLoyaltyUser = transform.transformToArrayOneString(newLoyaltyUserList);
@@ -127,5 +135,13 @@ public class ImportDataForOrders {
 
     public String[] getPassword() {
         return password;
+    }
+
+    public String[][] getHbRepeatOrder() {
+        return hbRepeatOrder;
+    }
+
+    public String[][] getNormalRepeatOrder() {
+        return normalRepeatOrder;
     }
 }

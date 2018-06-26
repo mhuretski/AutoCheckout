@@ -26,7 +26,7 @@ public class ImportTransformations {
         return arrayInt;
     }
 
-    private String[][] transformToArrayTwo(List<String> arrayList) {
+    public String[][] transformToArrayTwo(List<String> arrayList) {
         String[][] array = new String[arrayList.size()][1];
         fromListToArray(array, arrayList);
         return splitArrayCells(array);
@@ -75,7 +75,7 @@ public class ImportTransformations {
         }
     }
 
-    private void showArray(String[][] array){
+    public void showArray(String[][] array){
         for (String[] anArray : array) {
             for (String anAnArray : anArray) {
                 System.out.print(anAnArray + " ");
