@@ -3,6 +3,8 @@ package Pages;
 import Logic.Site;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 public class RecPage {
     private void openHLP(String site, WebDriver driver) {
@@ -21,9 +23,23 @@ public class RecPage {
 
     private void addToBasketNormalHealthbox(String[] arrayItemId, WebDriver driver) {
         for (String itemId : arrayItemId) {
-            driver.findElement(By.xpath("//button[@type='submit'][@data-rr-sku-id='" + itemId + "']"))
-                    .click();
+            if (driver.findElements(By.xpath("//button[@type='submit'][@data-rr-sku-id='" + itemId + "']")).size() > 0) {
+                driver.findElement(By.xpath("//button[@type='submit'][@data-rr-sku-id='" + itemId + "']"))
+                        .click();
+            } else {
+                WebElement chosenContainerForItem = driver.findElement(By.xpath("//option[@data-sku-id='" + itemId + "']"));
+                String getValue = chosenContainerForItem.getAttribute("value");
+
+                Select dropdown = new Select(driver.findElement(By.xpath("//option[@data-sku-id='" + itemId + "']/ancestor::select")));
+                dropdown.selectByValue(getValue);
+
+                driver.findElement(By.xpath("//option[@data-sku-id='" + itemId + "']/ancestor::fieldset/fieldset"))
+                        .click();
+
+            }
+
         }
+
 
     }
 
@@ -39,11 +55,11 @@ public class RecPage {
         if (healthbox == 1) {
             addToBasketFromCarousel(itemId, driver);
         }
-        if(healthbox == 3) {
+        if (healthbox == 3) {
             openNormalHealthbox(driver);
             addToBasketNormalHealthbox(itemId, driver);
         }
-        if(healthbox == 4) {
+        if (healthbox == 4) {
             addToBasketNormalHealthbox(itemId, driver);
         }
     }
@@ -55,7 +71,7 @@ public class RecPage {
 
     }
 
-    RecPage(String site, WebDriver driver){
+    RecPage(String site, WebDriver driver) {
         openHLP(site, driver);
         openRecsPage(driver);
     }
