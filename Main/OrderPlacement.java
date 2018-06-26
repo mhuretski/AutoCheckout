@@ -8,7 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.Test;
 
 
-class PlaceOrder {
+class OrderPlacement {
 
     @Test
     void placeOrders() {
@@ -45,8 +45,9 @@ class PlaceOrder {
                                 driver);
                         i--;
                         amountOfAttemptsBeforeExit--;
+                    }else {
+                        new ErrorHandling(data.getOrderSequence()[i], exception, driver);
                     }
-                    else new ErrorHandling(exception, driver);
                 }
             }
         }

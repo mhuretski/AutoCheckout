@@ -12,15 +12,14 @@ public class ErrorHandling {
         driver.quit();
         try {
             new Basket().remove(username, password, site);
-        } catch (InterruptedException exInBasket) {
+        } catch (Exception exInBasket) {
             exInBasket.printStackTrace();
+            new OrderLogging("basket", orderSequence, driver);
         }
-        new OrderLogging("basket", orderSequence, driver);
-
     }
 
-    public ErrorHandling(Exception e, WebDriver driver){
-        System.err.println("Something went wrong.");
+    public ErrorHandling(int orderSequence, Exception e, WebDriver driver) {
+        new OrderLogging("error", orderSequence, driver);
         e.printStackTrace();
         driver.quit();
     }
