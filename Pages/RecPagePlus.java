@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 public class RecPagePlus {
 
     private void addToBasket(WebDriver driver) {
-            driver.findElement(By.xpath("//input[contains(@class,'healthbox-button-submit healthbox-button-orange js-hbp-submit-btn')]"))
+            driver.findElement(By.cssSelector("input.healthbox-button-submit"))
                     .click();
     }
 
@@ -15,4 +15,3 @@ public class RecPagePlus {
         addToBasket(driver);
     }
 }
-

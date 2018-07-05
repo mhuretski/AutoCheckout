@@ -10,17 +10,17 @@ public class Checkout {
     }
 
     private void chooseAddress(WebDriver driver) {
-        driver.findElement(By.xpath("//input[contains(@class,'input-radio js-delivery-address-radio-selector')]"))
+        driver.findElement(By.cssSelector("input.js-delivery-address-radio-selector"))
                 .click();
     }
 
     private void chooseDeliveryButton(WebDriver driver) {
-        driver.findElement(By.xpath("//button[@id='js-address-list-cta']"))
+        driver.findElement(By.cssSelector("button#js-address-list-cta"))
                 .click();
     }
 
     private void continueToPayment(WebDriver driver) {
-        driver.findElement(By.xpath("//button[contains(@class,'btn btn-primary checkout-submit-btn js-delivery-option-submit-button')]"))
+        driver.findElement(By.cssSelector("button.checkout-submit-btn"))
                 .click();
     }
 
@@ -32,4 +32,5 @@ public class Checkout {
 
         continueToPayment(driver);
     }
+
 }

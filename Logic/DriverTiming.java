@@ -13,4 +13,5 @@ public class DriverTiming {
         driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
         driver.manage().window().maximize();
     }
+
 }

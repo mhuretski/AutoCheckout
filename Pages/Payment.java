@@ -11,9 +11,9 @@ public class Payment {
 
     private void payByCard(WebDriver driver) throws InterruptedException {
         sleep(3000);
-        WebElement wtf = driver.findElement(By.xpath("//p[starts-with(., 'Card')]"));
+        driver.findElement(By.cssSelector("input.input-radio.js-checkout-payment-type-switch-cc"))
+                .click();
         sleep(3000);
-        wtf.click();
     }
 
     private void agreeToTerms(WebDriver driver) {
@@ -27,17 +27,20 @@ public class Payment {
     }
 
     private void goToPayment(WebDriver driver) {
-        driver.findElement(By.xpath("//button[contains(@class,'btn btn-primary checkout-submit-btn js-checkout-billing-address-submit js-adyen-payment-submit')]"))
+        driver.findElement(By.cssSelector("button.checkout-submit-btn.js-checkout-billing-address-submit"))
                 .click();
 
     }
 
-    private void pay(WebDriver driver) throws InterruptedException {
-
-        sleep(3000);
-        WebElement paymentFrame = driver.findElement(By.xpath("//iframe[@allowtransparency='true']"));
+    private void switchToFrame(WebDriver driver) {
+        WebElement paymentFrame = driver.findElement(By.cssSelector("iframe[allowtransparency='true']"));
         driver.switchTo().frame(paymentFrame);
-        sleep(3000);
+
+    }
+
+    private void pay(WebDriver driver) {
+
+        switchToFrame(driver);
 
         WebElement cardNumber = driver.findElement(By.cssSelector("input#payment-cardnumber"));
         cardNumber.click();
@@ -51,6 +54,11 @@ public class Payment {
         Select year = new Select(driver.findElement(By.cssSelector("select#payment-expirydate-year")));
         year.selectByIndex(4);
 
+        payFast(driver);
+    }
+
+    private void payFast(WebDriver driver) {
+
         driver.findElement(By.cssSelector("input#payment-cvc")).sendKeys("123");
 
         driver.findElement(By.cssSelector("input#payment-submit")).click();
@@ -63,8 +71,10 @@ public class Payment {
         /*Depends on site configuration*/
 //        agreeToTerms(driver);
 //        enterBillingSection(driver);
+//        goToPayment(driver);
 
-        goToPayment(driver);
-        pay(driver);
+        switchToFrame(driver);
+        payFast(driver);
     }
+
 }

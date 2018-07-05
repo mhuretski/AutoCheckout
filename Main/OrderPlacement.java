@@ -8,7 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.Test;
 
 
-class OrderPlacement {
+public class OrderPlacement {
 
     @Test
     void placeOrders() {
@@ -50,6 +50,7 @@ class OrderPlacement {
             }
         }
     }
+
 }
 
 

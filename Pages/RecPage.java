@@ -12,23 +12,24 @@ public class RecPage {
     }
 
     private void openRecsPage(WebDriver driver) {
-        driver.findElement(By.xpath("//a[contains(@class,'button healthbox-button orangeSubmit')]"))
+        driver.findElement(By.cssSelector("a.orangeSubmit"))
                 .click();
     }
 
     private void openNormalHealthbox(WebDriver driver) {
-        driver.findElement(By.xpath("//span[contains(@class,'hbp-switcher mobile-hidden')]//a[@data-hb-form-submit='#hbp-switcher-form']"))
+        driver.findElement(By.cssSelector(".hb-switcher-button"))
                 .click();
     }
 
     private void addToBasketNormalHealthbox(String[] arrayItemId, WebDriver driver) {
         for (String itemId : arrayItemId) {
-            if (driver.findElements(By.xpath("//button[@type='submit'][@data-rr-sku-id='" + itemId + "']")).size() > 0) {
-                WebElement addToBasketIfFirstInDropdown = driver.findElement(By.xpath("//button[@type='submit'][@data-rr-sku-id='" + itemId + "']"));
+            String itemFirstInDropdown = "button[type='submit'][data-rr-sku-id='" + itemId + "']";
+            if (driver.findElements(By.cssSelector(itemFirstInDropdown)).size() > 0) {
+                WebElement addToBasketIfFirstInDropdown = driver.findElement(By.cssSelector(itemFirstInDropdown));
                 addToBasketIfFirstInDropdown.click();
             } else {
                 /*find element*/
-                WebElement chosenContainerForItem = driver.findElement(By.xpath("//option[@data-sku-id='" + itemId + "']"));
+                WebElement chosenContainerForItem = driver.findElement(By.cssSelector("option[data-sku-id='" + itemId + "']"));
                 /*get its "value" parameter*/
                 String getValue = chosenContainerForItem.getAttribute("value");
 
@@ -47,7 +48,7 @@ public class RecPage {
 
     private void addToBasketFromCarousel(String[] arrayItemId, WebDriver driver) {
         for (String itemId : arrayItemId) {
-            driver.findElement(By.xpath("//div[contains(@class,'carousel-prod-submit-bt-wrapper')]//button[@data-og-product='" + itemId + "']"))
+            driver.findElement(By.xpath("div.carousel-prod-submit-bt-wrapper button[data-og-product='" + itemId + "']"))
                     .click();
         }
 

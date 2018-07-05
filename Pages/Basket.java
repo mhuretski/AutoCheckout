@@ -12,14 +12,14 @@ public class Basket {
         driver.get(new Site().chosenSite(site) + "basket/basket.jsp");
     }
 
-    private void addItem(String[] healthboxItem, int[] healthboxItemQty, WebDriver driver) {
+    private void addHealthboxItem(String[] healthboxItem, int[] healthboxItemQty, WebDriver driver) {
 
         for (int i = 0; i < healthboxItem.length; i++) {
 
             for (int j = 0; j < healthboxItemQty[i] - 1; j++) {
                 driver.findElement(By.xpath("//span[starts-with(., '" + healthboxItem[i] + "')]/ancestor::article//dl[contains(@class, 'l-col quantity mobile-hidden')]//button[@type='button'][contains(@class, 'plus')]"))
                         .click();
-                driver.findElement(By.xpath("//div[contains(@class,'ajax-loader-bg')][@style='display: none;']"));
+                waitLoaderAnimation(driver);
             }
         }
 
@@ -32,36 +32,41 @@ public class Basket {
         driver.quit();
     }
 
-    private void removeItems(String username, String password, String site, WebDriver driver) throws InterruptedException {
+    private void waitLoaderAnimation(WebDriver driver){
+        driver.findElement(By.cssSelector("div.ajax-loader-bg[style='display: none;']"));
+    }
+
+    private void removeItems(String username, String password, String site, WebDriver driver) {
 
         do {
             open(site, driver);
         }
         while (driver.findElements(By.xpath("//pre[text()[contains(.,'Your session expired due to inactivity')]]")).size() != 0);
 
-        if (driver.findElements(By.xpath("//a[contains(@class,'lnk-not-you')]")).size() == 0)
+        if (driver.findElements(By.cssSelector("a.lnk-not-you")).size() == 0)
             new Login(username, password, site, driver);
 
         open(site, driver);
         new Loyalty().removeLoyaltyCard(driver);
 
         while (isBasketEmpty(driver)) {
-            driver.findElement(By.xpath("//dl[contains(@class, 'l-col quantity mobile-hidden')]//a[contains(@class,'act-remove removeCartItem')]"))
+            driver.findElement(By.cssSelector("dl.l-col.quantity.mobile-hidden a.act-remove.removeCartItem"))
                     .click();
-            driver.findElement(By.xpath("//div[contains(@class,'ajax-loader')][@style='display: none;']"));
+            waitLoaderAnimation(driver);
 
         }
     }
 
     private boolean isBasketEmpty(WebDriver driver) {
-        return driver.findElements(By.xpath("//section[contains(@class,'s-basket s-basket-empty')]")).size() == 0;
+        return driver.findElements(By.cssSelector("section.s-basket-empty")).size() == 0;
     }
 
     public Basket(String[] healthboxItem, int[] healthboxItemQty, String site, WebDriver driver) {
         open(site, driver);
-        addItem(healthboxItem, healthboxItemQty, driver);
+        addHealthboxItem(healthboxItem, healthboxItemQty, driver);
     }
 
     public Basket() {
     }
+
 }

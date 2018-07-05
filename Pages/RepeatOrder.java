@@ -20,4 +20,5 @@ public class RepeatOrder {
         new Basket().open(site, driver);
         chooseRepeatOrder(healthboxItem, hbRepeatOrder, normalItem, normalRepeatOrder, driver);
     }
+
 }

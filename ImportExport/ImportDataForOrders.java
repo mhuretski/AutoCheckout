@@ -27,25 +27,24 @@ public class ImportDataForOrders {
 
     public ImportDataForOrders() {
 
-        LinkedList<String> orderSequenceList = new LinkedList<String>();
-        LinkedList<String> healthboxList = new LinkedList<String>();
-        LinkedList<String> healthboxItemList = new LinkedList<String>();
-        LinkedList<String> healthboxItemQtyList = new LinkedList<String>();
-        LinkedList<String> hbRepeatOrderList = new LinkedList<String>();
-        LinkedList<String> normalItemList = new LinkedList<String>();
-        LinkedList<String> normalItemQtyStringList = new LinkedList<String>();
-        LinkedList<String> normalRepeatOrderList = new LinkedList<String>();
-        LinkedList<String> hbPlusList = new LinkedList<String>();
-        LinkedList<String> siteList = new LinkedList<String>();
-        LinkedList<String> newLoyaltyUserList = new LinkedList<String>();
-        LinkedList<String> loyaltyCardList = new LinkedList<String>();
-        LinkedList<String> usernameList = new LinkedList<String>();
-        LinkedList<String> passwordList = new LinkedList<String>();
+        LinkedList<String> orderSequenceList = new LinkedList<>();
+        LinkedList<String> healthboxList = new LinkedList<>();
+        LinkedList<String> healthboxItemList = new LinkedList<>();
+        LinkedList<String> healthboxItemQtyList = new LinkedList<>();
+        LinkedList<String> hbRepeatOrderList = new LinkedList<>();
+        LinkedList<String> normalItemList = new LinkedList<>();
+        LinkedList<String> normalItemQtyStringList = new LinkedList<>();
+        LinkedList<String> normalRepeatOrderList = new LinkedList<>();
+        LinkedList<String> hbPlusList = new LinkedList<>();
+        LinkedList<String> siteList = new LinkedList<>();
+        LinkedList<String> newLoyaltyUserList = new LinkedList<>();
+        LinkedList<String> loyaltyCardList = new LinkedList<>();
+        LinkedList<String> usernameList = new LinkedList<>();
+        LinkedList<String> passwordList = new LinkedList<>();
 
         String csvFile = "C:\\Users\\Maksim_Huretski\\Desktop\\Everest\\orders_source.csv";
         try {
-            CSVReader reader;
-            reader = new CSVReader(new FileReader(csvFile));
+            CSVReader reader = new CSVReader(new FileReader(csvFile));
             String[] line;
             for (int i = 0; (line = reader.readNext()) != null; i++) {
                 if (i != 0) {
@@ -72,20 +71,20 @@ public class ImportDataForOrders {
         }
 
         ImportTransformations transform = new ImportTransformations();
-        this.orderSequence = transform.transformToArrayOneInt(orderSequenceList);
-        this.healthbox = transform.transformToArrayOneInt(healthboxList);
-        this.healthboxItem = transform.transformToArrayTwoWithZeros(healthboxItemList);
-        this.healthboxItemQty = transform.transformToArrayTwoInt(healthboxItemQtyList);
-        this.hbRepeatOrder = transform.transformToArrayTwo(hbRepeatOrderList);
-        this.normalItems = transform.transformToArrayTwoWithZeros(normalItemList);
-        this.normalItemsQty = transform.transformToArrayTwoInt(normalItemQtyStringList);
-        this.normalRepeatOrder = transform.transformToArrayTwo(normalRepeatOrderList);
-        this.hbPlus = transform.transformToArrayOneString(hbPlusList);
-        this.site = transform.transformToArrayOneString(siteList);
-        this.newLoyaltyUser = transform.transformToArrayOneString(newLoyaltyUserList);
-        this.loyaltyCard = transform.transformToArrayOneString(loyaltyCardList);
-        this.username = transform.transformToArrayOneString(usernameList);
-        this.password = transform.transformToArrayOneString(passwordList);
+        orderSequence = transform.transformToArrayOneInt(orderSequenceList);
+        healthbox = transform.transformToArrayOneInt(healthboxList);
+        healthboxItem = transform.transformToArrayTwoWithZeros(healthboxItemList);
+        healthboxItemQty = transform.transformToArrayTwoInt(healthboxItemQtyList);
+        hbRepeatOrder = transform.transformToArrayTwo(hbRepeatOrderList);
+        normalItems = transform.transformToArrayTwoWithZeros(normalItemList);
+        normalItemsQty = transform.transformToArrayTwoInt(normalItemQtyStringList);
+        normalRepeatOrder = transform.transformToArrayTwo(normalRepeatOrderList);
+        hbPlus = transform.transformToArrayOneString(hbPlusList);
+        site = transform.transformToArrayOneString(siteList);
+        newLoyaltyUser = transform.transformToArrayOneString(newLoyaltyUserList);
+        loyaltyCard = transform.transformToArrayOneString(loyaltyCardList);
+        username = transform.transformToArrayOneString(usernameList);
+        password = transform.transformToArrayOneString(passwordList);
 
     }
 
@@ -144,4 +143,5 @@ public class ImportDataForOrders {
     public String[][] getNormalRepeatOrder() {
         return normalRepeatOrder;
     }
+
 }

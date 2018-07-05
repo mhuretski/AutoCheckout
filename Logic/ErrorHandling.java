@@ -14,11 +14,16 @@ public class ErrorHandling {
             new Basket().remove(username, password, site);
         } catch (Exception exInBasket) {
             exInBasket.printStackTrace();
-            new OrderLogging("basket", orderSequence, driver);
+            try {
+                new OrderLogging("basket", orderSequence, driver);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 
     public ErrorHandling(int orderSequence, String site, String username, String password, Exception e, WebDriver driver) {
         handle(orderSequence, site, username, password, e, driver);
     }
+
 }

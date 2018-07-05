@@ -15,9 +15,9 @@ public class Loyalty {
     }
 
     void removeLoyaltyCard(WebDriver driver) {
-        String removeCardSelector = "//a[@id='jsChangeRflCard']";
-        if (driver.findElements(By.xpath(removeCardSelector)).size() > 0) {
-            driver.findElement(By.xpath(removeCardSelector)).click();
+        String removeCardSelector = "jsChangeRflCard";
+        if (driver.findElements(By.id(removeCardSelector)).size() > 0) {
+            driver.findElement(By.id(removeCardSelector)).click();
         }
     }
 
@@ -27,4 +27,5 @@ public class Loyalty {
 
     Loyalty() {
     }
+
 }

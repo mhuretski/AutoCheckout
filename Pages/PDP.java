@@ -11,19 +11,19 @@ public class PDP {
     private void searchForItem(String itemId, String site, WebDriver driver) {
         new Site().open(site, driver);
 
-        WebElement searchField = driver.findElement(By.xpath("//input[@type='search']"));
+        WebElement searchField = driver.findElement(By.cssSelector("input[type='search']"));
         searchField.sendKeys(itemId);
         searchField.sendKeys(Keys.ENTER);
     }
 
     private void amountOfItemsToAdd(int qty, WebDriver driver) {
-        WebElement itemQty = driver.findElement(By.xpath("//button[@type='button'][contains(@class, 'plus')]"));
+        WebElement itemQty = driver.findElement(By.cssSelector("button.plus"));
         for (int i = 0; i < qty - 1; i++)
             itemQty.click();
     }
 
     private void addToBasket(WebDriver driver) {
-        driver.findElement(By.xpath("//input[@type='submit']"))
+        driver.findElement(By.cssSelector("input[type='submit']"))
                 .click();
     }
 

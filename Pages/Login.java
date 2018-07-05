@@ -14,7 +14,7 @@ public class Login {
 
         driver.get(new Site().chosenSite(site) + "my-account/login.jsp?myaccount=true");
 
-        WebElement login = driver.findElement(By.xpath("//input[@id='frm_login_email']"));
+        WebElement login = driver.findElement(By.cssSelector("input#frm_login_email"));
         login.click();
 
         login.sendKeys(username);
