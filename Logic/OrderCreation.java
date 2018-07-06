@@ -15,6 +15,7 @@ public class OrderCreation {
                          int[] normalItemQty,
                          String[] normalRepeatOrder,
                          String hbPlus,
+                         String hbpRepeat,
                          String site,
                          String newLoyaltyUser,
                          String loyaltyCard,
@@ -30,7 +31,7 @@ public class OrderCreation {
         if (isHealthbox || healthboxItem.length == 1 && !healthboxItem[0].equals("-"))
             new RecPage(healthbox, healthboxItem, site, driver);
         if (hbPlus.equals("+")) {
-            new RecPagePlus(site, driver);
+            new RecPagePlus(site, hbpRepeat, driver);
         }
 
         /*change qTy of healthbox items*/

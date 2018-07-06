@@ -30,6 +30,7 @@ public class OrderPlacement {
                             data.getNormalItemsQty()[i],
                             data.getNormalRepeatOrder()[i],
                             data.getHbPlus()[i],
+                            data.getHbpRepeat()[i],
                             data.getSite()[i],
                             data.getNewLoyaltyUser()[i],
                             data.getLoyaltyCard()[i],

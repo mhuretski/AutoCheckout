@@ -11,7 +11,7 @@ public class Wait {
     private int timeOut = 2;
 
     protected void waitLoaderAnimation(WebDriver driver) {
-        driver.findElement(By.cssSelector("div.ajax-loader-bg[style='display: none;']"));
+        driver.findElement(By.cssSelector(".ajax-loader-bg[style='display: none;']"));
     }
 
     protected void waitXpathPresence(WebDriver driver, String xpathExpression) {

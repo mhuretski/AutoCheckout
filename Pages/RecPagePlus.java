@@ -5,13 +5,20 @@ import org.openqa.selenium.WebDriver;
 
 public class RecPagePlus {
 
-    private void addToBasket(WebDriver driver) {
-            driver.findElement(By.cssSelector("input.healthbox-button-submit"))
-                    .click();
+    private void oneTime(WebDriver driver) {
+        driver.findElement(By.cssSelector(".subscription-option-label"))
+                .click();
     }
 
-    public RecPagePlus(String site, WebDriver driver){
+    private void addToBasket(WebDriver driver) {
+        driver.findElement(By.cssSelector("input.healthbox-button-submit"))
+                .click();
+    }
+
+    public RecPagePlus(String site, String hbpRepeat, WebDriver driver) {
         new RecPage(site, driver);
+        if (!hbpRepeat.equals("+"))
+            oneTime(driver);
         addToBasket(driver);
     }
 }

@@ -1,7 +1,7 @@
-orderSequence,healthbox,healthboxItem,healthboxItemsQty,hbRepeatOrder,normalItems,normalItemsQty,normalRepeatOrder,hbPlus,site,newLoyaltyUser,loyaltyCard,username,password
-1,0,-,0,-,"006012, 010190","3, 1","-, +",-,url.com,+,1111,username@mailinator.com,asdasd
-2,1,"006012, 010190","1, 6","+, -",10190,2,+,-,url.com,+,1111,username@mailinator.com,asdasd
-3,2,417,3,-,6012,2,-,-,url.com,-,1111,username@mailinator.com,asdasd
-4,0,-,0,-,"006012, 010190","3, 1","-, -",-,url.com,+,1111,username@mailinator.com,asdasd
-5,0,-,0,"-, +",10190,3,-,+,url.com,-,1111,username@mailinator.com,asdasd
-6,0,-,0,-,6012,1,-,-,url.com,-,1111,username@mailinator.com,asdasd
+orderSequence,healthbox,healthboxItem,healthboxItemsQty,hbRepeatOrder,normalItems,normalItemsQty,normalRepeatOrder,hbPlus,hbpRepeat,site,newLoyaltyUser,loyaltyCard,username,password
+1,0,-,0,-,"006012, 010190","3, 1","-, +",-,-,url.com,+,1111,username@mailinator.com,asdasd
+2,1,"006012, 010190","1, 6","+, -",10190,2,+,-,-,url.com,+,1111,username@mailinator.com,asdasd
+3,2,417,3,-,6012,2,-,-,-,url.com,-,1111,username@mailinator.com,asdasd
+4,0,-,0,-,"006012, 010190","3, 1","-, -",+,-,url.com,+,1111,username@mailinator.com,asdasd
+5,0,-,0,"-, +",10190,3,-,+,+,url.com,-,1111,username@mailinator.com,asdasd
+6,0,-,0,-,6012,1,-,-,-,url.com,-,1111,username@mailinator.com,asdasd

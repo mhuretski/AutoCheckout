@@ -19,6 +19,7 @@ public class ImportDataForOrders {
     private int[][] normalItemsQty;
     private String[][] normalRepeatOrder;
     private String[] hbPlus;
+    private String[] hbpRepeat;
     private String[] site;
     private String[] newLoyaltyUser;
     private String[] loyaltyCard;
@@ -36,6 +37,7 @@ public class ImportDataForOrders {
         LinkedList<String> normalItemQtyStringList = new LinkedList<>();
         LinkedList<String> normalRepeatOrderList = new LinkedList<>();
         LinkedList<String> hbPlusList = new LinkedList<>();
+        LinkedList<String> hbpRepeatList = new LinkedList<>();
         LinkedList<String> siteList = new LinkedList<>();
         LinkedList<String> newLoyaltyUserList = new LinkedList<>();
         LinkedList<String> loyaltyCardList = new LinkedList<>();
@@ -57,11 +59,12 @@ public class ImportDataForOrders {
                     normalItemQtyStringList.add(line[6]);
                     normalRepeatOrderList.add(line[7]);
                     hbPlusList.add(line[8]);
-                    siteList.add(line[9]);
-                    newLoyaltyUserList.add(line[10]);
-                    loyaltyCardList.add(line[11]);
-                    usernameList.add(line[12]);
-                    passwordList.add(line[13]);
+                    hbpRepeatList.add(line[9]);
+                    siteList.add(line[10]);
+                    newLoyaltyUserList.add(line[11]);
+                    loyaltyCardList.add(line[12]);
+                    usernameList.add(line[13]);
+                    passwordList.add(line[14]);
                 }
             }
             reader.close();
@@ -80,6 +83,7 @@ public class ImportDataForOrders {
         normalItemsQty = transform.transformToArrayTwoInt(normalItemQtyStringList);
         normalRepeatOrder = transform.transformToArrayTwo(normalRepeatOrderList);
         hbPlus = transform.transformToArrayOneString(hbPlusList);
+        hbpRepeat = transform.transformToArrayOneString(hbpRepeatList);
         site = transform.transformToArrayOneString(siteList);
         newLoyaltyUser = transform.transformToArrayOneString(newLoyaltyUserList);
         loyaltyCard = transform.transformToArrayOneString(loyaltyCardList);
@@ -144,4 +148,7 @@ public class ImportDataForOrders {
         return normalRepeatOrder;
     }
 
+    public String[] getHbpRepeat() {
+        return hbpRepeat;
+    }
 }
