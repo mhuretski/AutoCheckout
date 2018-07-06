@@ -2,11 +2,12 @@ package Pages;
 
 import Logic.DriverTiming;
 import Logic.Site;
+import Logic.Wait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class Basket {
+public class Basket extends Wait{
 
     void open(String site, WebDriver driver) {
         driver.get(new Site().chosenSite(site) + "basket/basket.jsp");
@@ -25,15 +26,11 @@ public class Basket {
 
     }
 
-    public void remove(String username, String password, String site) throws InterruptedException {
+    public void remove(String username, String password, String site) {
         WebDriver driver = new ChromeDriver();
         new DriverTiming(4, driver);
         removeItems(username, password, site, driver);
         driver.quit();
-    }
-
-    private void waitLoaderAnimation(WebDriver driver){
-        driver.findElement(By.cssSelector("div.ajax-loader-bg[style='display: none;']"));
     }
 
     private void removeItems(String username, String password, String site, WebDriver driver) {

@@ -61,7 +61,7 @@ public class OrderCreation {
         /*choose repeat order*/
         new RepeatOrder(healthboxItem, hbRepeatOrder, normalItem, normalRepeatOrder, site, driver);
 
-        new DriverTiming(20, driver);
+        new DriverTiming(4, driver);
         new Checkout(site, driver);
         new Payment(driver);
         new OrderLogging("success", orderSequence, driver);

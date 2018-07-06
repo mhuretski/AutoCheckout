@@ -1,19 +1,24 @@
 package Pages;
 
+import Logic.Wait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-import static java.lang.Thread.sleep;
+public class Payment extends Wait {
 
-public class Payment {
-
-    private void payByCard(WebDriver driver) throws InterruptedException {
-        sleep(3000);
-        driver.findElement(By.cssSelector("input.input-radio.js-checkout-payment-type-switch-cc"))
-                .click();
-        sleep(3000);
+    private void payByCard(WebDriver driver) {
+        waitLoaderAnimation(driver);
+        String cardSelector = "//input[contains(@class,'js-checkout-payment-type-switch-cc')]/ancestor::label";
+        WebElement chooseCard = driver.findElement(By.xpath(cardSelector));
+        waitClickableElem(driver, chooseCard);
+        waitClickableXpath(driver, cardSelector);
+        chooseCard.click();
+        if (driver.findElements(By.cssSelector(".js-billing-card-type-holder")).size() == 0){
+            chooseCard.click();
+        }
+        waitLoaderAnimation(driver);
     }
 
     private void agreeToTerms(WebDriver driver) {
@@ -65,7 +70,7 @@ public class Payment {
         driver.switchTo().defaultContent();
     }
 
-    public Payment(WebDriver driver) throws InterruptedException {
+    public Payment(WebDriver driver) {
         payByCard(driver);
 
         /*Depends on site configuration*/
