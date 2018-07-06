@@ -15,8 +15,15 @@ public class RecPagePlus {
                 .click();
     }
 
+    private void checkPlusPage(WebDriver driver) {
+        if (driver.findElements(By.cssSelector(".hbp-page")).size() == 0)
+            driver.findElement(By.cssSelector(".hb-switcher-button"))
+                    .click();
+    }
+
     public RecPagePlus(String site, String hbpRepeat, WebDriver driver) {
         new RecPage(site, driver);
+        checkPlusPage(driver);
         if (!hbpRepeat.equals("+"))
             oneTime(driver);
         addToBasket(driver);
