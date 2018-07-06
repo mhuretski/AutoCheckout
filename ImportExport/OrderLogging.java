@@ -1,5 +1,6 @@
 package ImportExport;
 
+import Logic.Wait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,9 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static java.lang.Thread.sleep;
-
-public class OrderLogging {
+public class OrderLogging extends Wait {
 
     private PrintWriter writer() throws IOException {
         return new PrintWriter(
@@ -19,17 +18,22 @@ public class OrderLogging {
                         new FileWriter("C:\\Users\\Maksim_Huretski\\Desktop\\Everest\\OrderNumber.txt", true)));
     }
 
-    private void orderStuff(PrintWriter writer, WebDriver driver) throws InterruptedException {
+    private void orderStuff(PrintWriter writer, WebDriver driver) {
         WebElement orderNumber = driver.findElement(By.cssSelector("span.order-number"));
         driver.findElement(By.cssSelector("i.ico-s.ico-expand.ico-20"))
                 .click();
-        sleep(1000);
-        WebElement orderTotal = driver.findElement(By.cssSelector("div.checkout-order-summary-total-pricing span.pull-right p.heading-3"));
-        writer.append(orderNumber.getText()).append(" ").append(orderTotal.getText()).println("");
+        String orderTotalCssSelector = "div.checkout-order-summary-total-pricing span.pull-right p.heading-3";
+        waitCssPresence(driver, orderTotalCssSelector);
+        WebElement orderTotal = driver.findElement(By.cssSelector(orderTotalCssSelector));
+        writer.append(orderNumber.getText()).append(" ");
+        while (orderTotal.getText() == null || orderTotal.getText().equals(""))
+            orderTotal = driver.findElement(By.cssSelector(orderTotalCssSelector));
+        writer.append(orderTotal.getText());
+        writer.println("");
 
     }
 
-    public OrderLogging(String result, int orderSequence, WebDriver driver) throws InterruptedException {
+    public OrderLogging(String result, int orderSequence, WebDriver driver) {
 
         try {
             PrintWriter writer = writer();

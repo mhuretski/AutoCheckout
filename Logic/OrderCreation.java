@@ -20,7 +20,7 @@ public class OrderCreation {
                          String loyaltyCard,
                          String username,
                          String password,
-                         WebDriver driver) throws InterruptedException {
+                         WebDriver driver) {
 
         new DriverTiming(3, driver);
         new Login(username, password, site, driver);

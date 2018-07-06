@@ -14,11 +14,7 @@ public class ErrorHandling {
             new Basket().remove(username, password, site);
         } catch (Exception exInBasket) {
             exInBasket.printStackTrace();
-            try {
-                new OrderLogging("basket", orderSequence, driver);
-            } catch (InterruptedException e1) {
-                e1.printStackTrace();
-            }
+            new OrderLogging("basket", orderSequence, driver);
         }
     }
 
