@@ -15,7 +15,7 @@ public class OrderLogging extends Wait {
     private PrintWriter writer() throws IOException {
         return new PrintWriter(
                 new BufferedWriter(
-                        new FileWriter("C:\\Users\\Maksim_Huretski\\Desktop\\Everest\\order_details.txt", true)));
+                        new FileWriter("C:\\Users\\Maksim_Huretski\\Desktop\\Everest\\AutoOrders\\order_details.txt", true)));
     }
 
     private void orderStuff(String[] healthboxItem, String[] normalItem, PrintWriter writer, WebDriver driver) {
