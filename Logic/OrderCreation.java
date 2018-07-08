@@ -28,7 +28,7 @@ public class OrderCreation {
         new Login(username, password, site, driver);
 
         /*add healthbox items*/
-        boolean isHealthbox = healthbox == 1 || healthbox == 2 || healthbox == 3 || healthbox == 4;
+        boolean isHealthbox = healthbox == 1 || healthbox == 3 || healthbox == 4;
         if (isHealthbox || healthboxItem.length == 1 && !healthboxItem[0].equals("-"))
             new RecPage(healthbox, healthboxItem, site, driver);
         if (hbPlus.equals("+")) {

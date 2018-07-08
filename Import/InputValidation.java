@@ -17,7 +17,7 @@ class InputValidation {
 
     void healthboxType(int[] healthbox, String[][] healthboxItem) {
         for (int i = 0; i < healthbox.length; i++) {
-            if ((healthbox[i] == 1 || healthbox[i] == 2 || healthbox[i] == 3 || healthbox[i] == 4)
+            if ((healthbox[i] == 1 || healthbox[i] == 3 || healthbox[i] == 4)
                     && healthboxItem[i][0].equals("-")) {
                 System.out.println("Healthbox field should be equal to 0 if there are no Healthbox items. Check input file.");
                 System.exit(1);
