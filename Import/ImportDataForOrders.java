@@ -1,6 +1,7 @@
 package Import;
 
 
+import Secured.SecureInputOutput;
 import com.opencsv.CSVReader;
 
 import java.io.FileReader;
@@ -45,7 +46,7 @@ public class ImportDataForOrders {
         LinkedList<String> usernameList = new LinkedList<>();
         LinkedList<String> passwordList = new LinkedList<>();
 
-        String csvFile = "C:\\Users\\Maksim_Huretski\\Desktop\\Everest\\AutoOrders\\orders_source.csv";
+        String csvFile = new SecureInputOutput().getInput();
         try {
             CSVReader reader = new CSVReader(new FileReader(csvFile));
             String[] line;

@@ -1,6 +1,7 @@
 package Export;
 
 import Logic.Wait;
+import Secured.SecureInputOutput;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,7 +16,7 @@ public class OrderLogging extends Wait {
     private PrintWriter writer() throws IOException {
         return new PrintWriter(
                 new BufferedWriter(
-                        new FileWriter("C:\\Users\\Maksim_Huretski\\Desktop\\Everest\\AutoOrders\\order_details.txt", true)));
+                        new FileWriter(new SecureInputOutput().getOutput(), true)));
     }
 
     private void orderStuff(String[] healthboxItem, String[] normalItem, PrintWriter writer, WebDriver driver) {
