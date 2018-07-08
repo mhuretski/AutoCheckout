@@ -1,6 +1,6 @@
 package Main;
 
-import ImportExport.ImportDataForOrders;
+import Import.ImportDataForOrders;
 import Logic.ErrorHandling;
 import Logic.OrderCreation;
 import org.openqa.selenium.WebDriver;
@@ -34,6 +34,7 @@ public class OrderPlacement {
                             data.getSite()[i],
                             data.getNewLoyaltyUser()[i],
                             data.getLoyaltyCard()[i],
+                            data.getCoupon()[i],
                             data.getUsername()[i],
                             data.getPassword()[i],
                             driver);

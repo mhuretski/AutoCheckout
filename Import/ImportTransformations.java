@@ -1,8 +1,8 @@
-package Logic;
+package Import;
 
 import java.util.List;
 
-public class ImportTransformations {
+class ImportTransformations {
 
     public int[][] transformToArrayTwoInt(List<String> arrayList) {
 
@@ -45,9 +45,7 @@ public class ImportTransformations {
             String[] split = array[i][0].split(", ");
             tempArray[i] = new String[split.length];
 
-            for (int j = 0; j < split.length; j++) {
-                tempArray[i][j] = split[j];
-            }
+            System.arraycopy(split, 0, tempArray[i], 0, split.length);
         }
         return tempArray;
     }
@@ -72,15 +70,6 @@ public class ImportTransformations {
     private void fromListToArray(String[] array, List<String> arrayList) {
         for (int i = 0; i < array.length; i++) {
             array[i] = arrayList.get(i);
-        }
-    }
-
-    public void showArray(String[][] array){
-        for (String[] anArray : array) {
-            for (String anAnArray : anArray) {
-                System.out.print(anAnArray + " ");
-            }
-            System.out.println("");
         }
     }
 

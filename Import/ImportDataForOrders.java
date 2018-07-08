@@ -1,7 +1,6 @@
-package ImportExport;
+package Import;
 
 
-import Logic.ImportTransformations;
 import com.opencsv.CSVReader;
 
 import java.io.FileReader;
@@ -23,6 +22,7 @@ public class ImportDataForOrders {
     private String[] site;
     private String[] newLoyaltyUser;
     private String[] loyaltyCard;
+    private String[] coupon;
     private String[] username;
     private String[] password;
 
@@ -41,6 +41,7 @@ public class ImportDataForOrders {
         LinkedList<String> siteList = new LinkedList<>();
         LinkedList<String> newLoyaltyUserList = new LinkedList<>();
         LinkedList<String> loyaltyCardList = new LinkedList<>();
+        LinkedList<String> couponList = new LinkedList<>();
         LinkedList<String> usernameList = new LinkedList<>();
         LinkedList<String> passwordList = new LinkedList<>();
 
@@ -63,8 +64,9 @@ public class ImportDataForOrders {
                     siteList.add(line[10]);
                     newLoyaltyUserList.add(line[11]);
                     loyaltyCardList.add(line[12]);
-                    usernameList.add(line[13]);
-                    passwordList.add(line[14]);
+                    couponList.add(line[13]);
+                    usernameList.add(line[14]);
+                    passwordList.add(line[15]);
                 }
             }
             reader.close();
@@ -87,8 +89,15 @@ public class ImportDataForOrders {
         site = transform.transformToArrayOneString(siteList);
         newLoyaltyUser = transform.transformToArrayOneString(newLoyaltyUserList);
         loyaltyCard = transform.transformToArrayOneString(loyaltyCardList);
+        coupon = transform.transformToArrayOneString(couponList);
         username = transform.transformToArrayOneString(usernameList);
         password = transform.transformToArrayOneString(passwordList);
+
+        InputValidation validate = new InputValidation();
+        validate.lengthEquality("Healthbox", healthboxItem, healthboxItemQty, hbRepeatOrder);
+        validate.lengthEquality("Normal", normalItems, normalItemsQty, normalRepeatOrder);
+        validate.healthboxType(healthbox, healthboxItem);
+        validate.loyalty(newLoyaltyUser, loyaltyCard);
 
     }
 
@@ -150,5 +159,9 @@ public class ImportDataForOrders {
 
     public String[] getHbpRepeat() {
         return hbpRepeat;
+    }
+
+    public String[] getCoupon() {
+        return coupon;
     }
 }

@@ -1,6 +1,6 @@
 package Logic;
 
-import ImportExport.OrderLogging;
+import Export.OrderLogging;
 import Pages.*;
 import org.openqa.selenium.WebDriver;
 
@@ -19,6 +19,7 @@ public class OrderCreation {
                          String site,
                          String newLoyaltyUser,
                          String loyaltyCard,
+                         String coupon,
                          String username,
                          String password,
                          WebDriver driver) {
@@ -59,13 +60,18 @@ public class OrderCreation {
             new Loyalty(site, driver).insertExistingLoyaltyCard(loyaltyCard, driver);
         }
 
+        /*add coupon*/
+        if (!coupon.equals("-")) {
+            new Loyalty(site, driver).insertCoupon(coupon, driver);
+        }
+
         /*choose repeat order*/
         new RepeatOrder(healthboxItem, hbRepeatOrder, normalItem, normalRepeatOrder, site, driver);
 
         new DriverTiming(4, driver);
         new Checkout(site, driver);
         new Payment(driver);
-        new OrderLogging("success", orderSequence, driver);
+        new OrderLogging().success(orderSequence, healthboxItem, normalItem, driver);
 
         driver.quit();
     }

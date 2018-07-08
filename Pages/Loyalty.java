@@ -14,6 +14,11 @@ public class Loyalty {
         driver.findElement(By.id("addRflCard")).click();
     }
 
+    public void insertCoupon(String coupon, WebDriver driver){
+        driver.findElement(By.id("discountCode")).sendKeys(coupon);
+        driver.findElement(By.id("addDiscount")).click();
+    }
+
     void removeLoyaltyCard(WebDriver driver) {
         String removeCardSelector = "jsChangeRflCard";
         if (driver.findElements(By.id(removeCardSelector)).size() > 0) {

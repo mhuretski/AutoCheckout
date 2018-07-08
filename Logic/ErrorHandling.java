@@ -1,6 +1,6 @@
 package Logic;
 
-import ImportExport.OrderLogging;
+import Export.OrderLogging;
 import Pages.Basket;
 import org.openqa.selenium.WebDriver;
 
@@ -14,7 +14,7 @@ public class ErrorHandling {
             new Basket().remove(username, password, site);
         } catch (Exception exInBasket) {
             exInBasket.printStackTrace();
-            new OrderLogging("basket", orderSequence, driver);
+            new OrderLogging().nonEmptiedBasket(orderSequence);
         }
     }
 
