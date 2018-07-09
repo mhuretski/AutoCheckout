@@ -30,6 +30,7 @@ public class OrderWriter {
         String outputFolder = new SecureInputOutput().getOutputFolder();
         writeOrderXMLs(orders, outputFolder);
         driver.quit();
+        
     }
 
     private void getOrderXMLs(ArrayList<ArrayList<String>> orders, SecureAdmin admin, WebDriver driver) {
