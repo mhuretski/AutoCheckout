@@ -1,7 +1,6 @@
 package Export;
 
 import Logic.Wait;
-import Secured.SecureInputOutput;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,19 +12,21 @@ import java.io.PrintWriter;
 
 public class OrderLogging extends Wait {
 
-    private PrintWriter writer() throws IOException {
+    private PrintWriter writer(OrderListing orderListing) throws IOException {
+
         return new PrintWriter(
                 new BufferedWriter(
-                        new FileWriter(new SecureInputOutput().getOutput(), true)));
+                        new FileWriter(orderListing.getOutputFolder() + "/orders_details.txt", true)));
     }
 
-    private void orderStuff(String[] healthboxItem, String[] normalItem, PrintWriter writer, WebDriver driver, OrderListing orderListing) {
+    private void orderStuff(String[] healthboxItem, String[] normalItem, int orderSequence, PrintWriter writer, WebDriver driver, OrderListing orderListing) {
         WebElement orderNumberElem = driver.findElement(By.cssSelector("span.order-number"));
         driver.findElement(By.cssSelector("i.ico-s.ico-expand.ico-20"))
                 .click();
         String orderNumber = orderNumberElem.getText();
         writer.append(orderNumber).append(" ");
 
+        orderListing.addOrderSequence(String.valueOf(orderSequence));
         orderListing.addOrderNumber(orderNumber);
 
         getAllPrices(healthboxItem, normalItem, writer, driver);
@@ -68,12 +69,10 @@ public class OrderLogging extends Wait {
 
     public void success(int orderSequence, String[] healthboxItem, String[] normalItem, WebDriver driver, OrderListing orderListing) {
         try {
-            PrintWriter writer = writer();
-            writer.append(String.valueOf(orderSequence)).append(" ");
+            PrintWriter writer = writer(orderListing);
+            writer.append(String.valueOf(orderSequence)).append(". ");
 
-            orderListing.addOrderSequence(String.valueOf(orderSequence));
-
-            orderStuff(healthboxItem, normalItem, writer, driver, orderListing);
+            orderStuff(healthboxItem, normalItem, orderSequence, writer, driver, orderListing);
             writer.close();
 
         } catch (IOException e) {
@@ -83,9 +82,9 @@ public class OrderLogging extends Wait {
 
     }
 
-    public void nonEmptiedBasket(int orderSequence) {
+    public void nonEmptiedBasket(int orderSequence, OrderListing orderListing) {
         try {
-            PrintWriter writer = writer();
+            PrintWriter writer = writer(orderListing);
             writer.append(String.valueOf(orderSequence)).append(" ")
                     .append("Basket might not be empty.").println("");
             writer.close();

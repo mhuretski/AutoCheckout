@@ -3,17 +3,20 @@ package Main;
 import Export.OrderListing;
 import Export.OrderWriter;
 import Import.ImportDataForOrders;
+import Logic.CreationTime;
 import Logic.ErrorHandling;
 import Logic.OrderCreation;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.Test;
 
 
 public class OrderPlacement {
 
-    @Test
-    void placeOrders() {
+    public static void main(String[] args) {
+
+        CreationTime executeTime = new CreationTime();
+        executeTime.setStartTime();
+
         ImportDataForOrders data = new ImportDataForOrders();
         OrderListing orderListing = new OrderListing();
 
@@ -49,7 +52,8 @@ public class OrderPlacement {
                             data.getUsername()[i],
                             data.getPassword()[i],
                             exception,
-                            driver);
+                            driver,
+                            orderListing);
                     i--;
                     amountOfAttemptsBeforeExit--;
                 }
@@ -57,8 +61,8 @@ public class OrderPlacement {
         }
         new OrderWriter(orderListing);
 
+        executeTime.setEndTime();
+        executeTime.show(data.getOrderSequence().length);
     }
 
 }
-
-

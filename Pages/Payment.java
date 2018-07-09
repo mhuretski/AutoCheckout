@@ -15,7 +15,7 @@ public class Payment extends Wait {
         waitClickableElem(driver, chooseCard);
         waitClickableXpath(driver, cardSelector);
         chooseCard.click();
-        if (driver.findElements(By.cssSelector(".js-billing-card-type-holder")).size() == 0){
+        if (driver.findElements(By.cssSelector(".js-billing-card-type-holder")).size() == 0) {
             chooseCard.click();
         }
         waitLoaderAnimation(driver);
@@ -66,7 +66,18 @@ public class Payment extends Wait {
 
         driver.findElement(By.cssSelector("input#payment-cvc")).sendKeys("123");
 
-        driver.findElement(By.cssSelector("input#payment-submit")).click();
+        String submitButton = "input#payment-submit";
+        waitCssPresence(driver, submitButton);
+        waitClickableCSS(driver, submitButton);
+        driver.findElement(By.cssSelector(submitButton)).click();
+
+//        try {
+//            while (driver.findElements(By.cssSelector(submitButton + "[disabled]")).size() == 0)
+//                driver.findElement(By.cssSelector(submitButton)).click();
+//        } catch (org.openqa.selenium.NoSuchElementException exception){
+//            System.out.println("Couldn't find element");
+//        }
+
         driver.switchTo().defaultContent();
     }
 

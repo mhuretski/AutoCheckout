@@ -19,9 +19,9 @@ public class Wait {
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpathExpression)));
     }
 
-    protected void waitCssPresence(WebDriver driver, String xpathExpression) {
+    protected void waitCssPresence(WebDriver driver, String cssSelector) {
         new WebDriverWait(driver, timeOut)
-                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(xpathExpression)));
+                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(cssSelector)));
     }
 
     protected void waitClickableElem(WebDriver driver, WebElement webElement) {

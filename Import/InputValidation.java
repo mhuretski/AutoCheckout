@@ -12,7 +12,7 @@ class InputValidation {
     }
 
     private void lengthMismatch(String definition) {
-        System.out.println(definition + " hasn't passed validation. Check input file.");
+        System.err.println(definition + " hasn't passed validation. Check input file.");
         System.exit(1);
     }
 
@@ -20,7 +20,7 @@ class InputValidation {
         for (int i = 0; i < healthbox.length; i++) {
             if ((healthbox[i] == 1 || healthbox[i] == 3 || healthbox[i] == 4)
                     && healthboxItem[i][0].equals("-")) {
-                System.out.println("Healthbox field should be equal to 0 if there are no Healthbox items. Check input file.");
+                System.err.println("Healthbox field should be equal to 0 if there are no Healthbox items. Check input file.");
                 System.exit(1);
             }
         }
@@ -31,7 +31,7 @@ class InputValidation {
         String minus = "-";
         for (int i = 0; i < newLoyaltyUser.length; i++) {
             if (newLoyaltyUser[i].equals(plus) && !loyaltyCard[i].equals(minus)){
-                System.out.println("New loyalty user can't have an existing card. Check input file.");
+                System.err.println("New loyalty user can't have an existing card. Check input file.");
                 System.exit(1);
             }
         }
