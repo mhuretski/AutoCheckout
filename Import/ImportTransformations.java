@@ -4,7 +4,7 @@ import java.util.List;
 
 class ImportTransformations {
 
-    public int[][] transformToArrayTwoInt(List<String> arrayList) {
+    int[][] transformToArrayTwoInt(List<String> arrayList) {
 
         String[][] arrayString = transformToArrayTwo(arrayList);
         int[][] arrayInt = new int[arrayString.length][];
@@ -17,7 +17,7 @@ class ImportTransformations {
         return arrayInt;
     }
 
-    public int[] transformToArrayOneInt(List<String> arrayList) {
+    int[] transformToArrayOneInt(List<String> arrayList) {
         String[] arrayString = transformToArrayOneString(arrayList);
         int[] arrayInt = new int[arrayString.length];
         for (int i = 0; i < arrayString.length; i++) {
@@ -26,7 +26,7 @@ class ImportTransformations {
         return arrayInt;
     }
 
-    public String[][] transformToArrayTwo(List<String> arrayList) {
+    String[][] transformToArrayTwo(List<String> arrayList) {
         String[][] array = new String[arrayList.size()][1];
         fromListToArray(array, arrayList);
         return splitArrayCells(array);
@@ -50,7 +50,7 @@ class ImportTransformations {
         return tempArray;
     }
 
-    public String[][] transformToArrayTwoWithZeros(List<String> arrayList){
+    String[][] transformToArrayTwoWithZeros(List<String> arrayList){
         String[][] arrayString = transformToArrayTwo(arrayList);
         ZerosBeforeItemId addZeros = new ZerosBeforeItemId();
         for (int i = 0; i < arrayString.length; i++) {
@@ -61,7 +61,7 @@ class ImportTransformations {
         return arrayString;
     }
 
-    public String[] transformToArrayOneString(List<String> arrayList) {
+    String[] transformToArrayOneString(List<String> arrayList) {
         String[] array = new String[arrayList.size()];
         fromListToArray(array, arrayList);
         return array;

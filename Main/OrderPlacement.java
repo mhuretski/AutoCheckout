@@ -1,5 +1,7 @@
 package Main;
 
+import Export.OrderListing;
+import Export.OrderWriter;
 import Import.ImportDataForOrders;
 import Logic.ErrorHandling;
 import Logic.OrderCreation;
@@ -13,6 +15,7 @@ public class OrderPlacement {
     @Test
     void placeOrders() {
         ImportDataForOrders data = new ImportDataForOrders();
+        OrderListing orderListing = new OrderListing();
 
         int amountOfAttemptsBeforeExit = 10;
         int i = 0;
@@ -37,8 +40,9 @@ public class OrderPlacement {
                             data.getCoupon()[i],
                             data.getUsername()[i],
                             data.getPassword()[i],
-                            driver);
-                } catch (Exception exception) {
+                            driver,
+                            orderListing);
+                } catch (org.openqa.selenium.WebDriverException exception) {
                     new ErrorHandling(
                             data.getOrderSequence()[i],
                             data.getSite()[i],
@@ -51,6 +55,8 @@ public class OrderPlacement {
                 }
             }
         }
+        new OrderWriter(orderListing);
+
     }
 
 }

@@ -19,11 +19,15 @@ public class OrderLogging extends Wait {
                         new FileWriter(new SecureInputOutput().getOutput(), true)));
     }
 
-    private void orderStuff(String[] healthboxItem, String[] normalItem, PrintWriter writer, WebDriver driver) {
-        WebElement orderNumber = driver.findElement(By.cssSelector("span.order-number"));
+    private void orderStuff(String[] healthboxItem, String[] normalItem, PrintWriter writer, WebDriver driver, OrderListing orderListing) {
+        WebElement orderNumberElem = driver.findElement(By.cssSelector("span.order-number"));
         driver.findElement(By.cssSelector("i.ico-s.ico-expand.ico-20"))
                 .click();
-        writer.append(orderNumber.getText()).append(" ");
+        String orderNumber = orderNumberElem.getText();
+        writer.append(orderNumber).append(" ");
+
+        orderListing.addOrderNumber(orderNumber);
+
         getAllPrices(healthboxItem, normalItem, writer, driver);
         getTotal(writer, driver);
     }
@@ -43,7 +47,7 @@ public class OrderLogging extends Wait {
                     while (itemPrice.getText() == null || itemPrice.getText().equals(""))
                         itemPrice = driver.findElement(By.xpath(itemSelector));
                     writer.append(itemId).append(": ").append(itemPrice.getText()).append(" ");
-                } catch (Exception e) {
+                } catch (org.openqa.selenium.WebDriverException e) {
                     writer.append(itemId).append(": - ");
                     e.printStackTrace();
                 }
@@ -62,11 +66,14 @@ public class OrderLogging extends Wait {
         writer.println("");
     }
 
-    public void success(int orderSequence, String[] healthboxItem, String[] normalItem, WebDriver driver) {
+    public void success(int orderSequence, String[] healthboxItem, String[] normalItem, WebDriver driver, OrderListing orderListing) {
         try {
             PrintWriter writer = writer();
             writer.append(String.valueOf(orderSequence)).append(" ");
-            orderStuff(healthboxItem, normalItem, writer, driver);
+
+            orderListing.addOrderSequence(String.valueOf(orderSequence));
+
+            orderStuff(healthboxItem, normalItem, writer, driver, orderListing);
             writer.close();
 
         } catch (IOException e) {

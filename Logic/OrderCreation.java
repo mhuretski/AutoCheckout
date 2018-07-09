@@ -1,6 +1,7 @@
 package Logic;
 
 import Export.OrderLogging;
+import Export.OrderListing;
 import Pages.*;
 import org.openqa.selenium.WebDriver;
 
@@ -22,7 +23,8 @@ public class OrderCreation {
                          String coupon,
                          String username,
                          String password,
-                         WebDriver driver) {
+                         WebDriver driver,
+                         OrderListing orderListing) {
 
         new DriverTiming(3, driver);
         new Login(username, password, site, driver);
@@ -71,7 +73,7 @@ public class OrderCreation {
         new DriverTiming(4, driver);
         new Checkout(site, driver);
         new Payment(driver);
-        new OrderLogging().success(orderSequence, healthboxItem, normalItem, driver);
+        new OrderLogging().success(orderSequence, healthboxItem, normalItem, driver, orderListing);
 
         driver.quit();
     }

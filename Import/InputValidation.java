@@ -1,6 +1,7 @@
 package Import;
 
 class InputValidation {
+
     void lengthEquality(String definition, String[][] item, int[][] itemQty, String[][] repeatOrder) {
         if (item.length == itemQty.length && item.length == repeatOrder.length) {
             for (int i = 0; i < item.length; i++) {

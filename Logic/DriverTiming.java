@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import java.util.concurrent.TimeUnit;
 
 public class DriverTiming {
+
     public DriverTiming(int timeout, WebDriver driver) {
         open(timeout, driver);
     }
