@@ -71,13 +71,6 @@ public class Payment extends Wait {
         waitClickableCSS(driver, submitButton);
         driver.findElement(By.cssSelector(submitButton)).click();
 
-//        try {
-//            while (driver.findElements(By.cssSelector(submitButton + "[disabled]")).size() == 0)
-//                driver.findElement(By.cssSelector(submitButton)).click();
-//        } catch (org.openqa.selenium.NoSuchElementException exception){
-//            System.out.println("Couldn't find element");
-//        }
-
         driver.switchTo().defaultContent();
     }
 
