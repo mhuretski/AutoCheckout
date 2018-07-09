@@ -38,7 +38,7 @@ public class OrderPlacement {
                             data.getUsername()[i],
                             data.getPassword()[i],
                             driver);
-                } catch (Exception exception) {
+                } catch (org.openqa.selenium.WebDriverException exception) {
                     new ErrorHandling(
                             data.getOrderSequence()[i],
                             data.getSite()[i],

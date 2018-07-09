@@ -43,7 +43,7 @@ public class OrderLogging extends Wait {
                     while (itemPrice.getText() == null || itemPrice.getText().equals(""))
                         itemPrice = driver.findElement(By.xpath(itemSelector));
                     writer.append(itemId).append(": ").append(itemPrice.getText()).append(" ");
-                } catch (Exception e) {
+                } catch (org.openqa.selenium.WebDriverException e) {
                     writer.append(itemId).append(": - ");
                     e.printStackTrace();
                 }

@@ -6,19 +6,19 @@ import org.openqa.selenium.WebDriver;
 
 public class ErrorHandling {
 
-    private void handle(int orderSequence, String site, String username, String password, Exception e, WebDriver driver) {
+    private void handle(int orderSequence, String site, String username, String password, org.openqa.selenium.WebDriverException e, WebDriver driver) {
 
         e.printStackTrace();
         driver.quit();
         try {
             new Basket().remove(username, password, site);
-        } catch (Exception exInBasket) {
+        } catch (org.openqa.selenium.WebDriverException exInBasket) {
             exInBasket.printStackTrace();
             new OrderLogging().nonEmptiedBasket(orderSequence);
         }
     }
 
-    public ErrorHandling(int orderSequence, String site, String username, String password, Exception e, WebDriver driver) {
+    public ErrorHandling(int orderSequence, String site, String username, String password, org.openqa.selenium.WebDriverException e, WebDriver driver) {
         handle(orderSequence, site, username, password, e, driver);
     }
 
