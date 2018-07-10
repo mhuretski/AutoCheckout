@@ -50,7 +50,7 @@ public class OrderLogging extends Wait {
                     writer.append(itemId).append(": ").append(itemPrice.getText()).append(" ");
                 } catch (org.openqa.selenium.WebDriverException e) {
                     writer.append(itemId).append(": - ");
-                    e.printStackTrace();
+                    System.err.println("Couldn't get price for " + itemId + ". Item isn't eligible for OG (selector).");
                 }
             }
         }

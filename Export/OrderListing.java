@@ -12,7 +12,7 @@ public class OrderListing {
 
     public OrderListing(){
         outputFolder = new SecureInputOutput().getOutputFolder()
-                + new SimpleDateFormat("HH.mm dd.MM.yy").format(new java.util.Date());
+                + new SimpleDateFormat("dd.MM.yy HH.mm").format(new java.util.Date());
         try {
             Files.createDirectories(Paths.get(outputFolder));
         } catch (IOException e) {

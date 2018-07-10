@@ -14,6 +14,10 @@ public class Wait {
         driver.findElement(By.cssSelector(".ajax-loader-bg[style='display: none;']"));
     }
 
+    protected void waitHBPLoaderAnimation(WebDriver driver) {
+        driver.findElement(By.cssSelector(".pod-calc-progress-modal[style='display: none;']"));
+    }
+
     protected void waitXpathPresence(WebDriver driver, String xpathExpression) {
         new WebDriverWait(driver, timeOut)
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpathExpression)));
