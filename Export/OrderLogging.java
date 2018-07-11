@@ -16,7 +16,7 @@ public class OrderLogging extends Wait {
 
         return new PrintWriter(
                 new BufferedWriter(
-                        new FileWriter(orderListing.getOutputFolder() + "/orders_details.txt", true)));
+                        new FileWriter(orderListing.getOutputFolder() + "orders_details.txt", true)));
     }
 
     private void orderStuff(String[] healthboxItem, String[] normalItem, int orderSequence, PrintWriter writer, WebDriver driver, OrderListing orderListing) {

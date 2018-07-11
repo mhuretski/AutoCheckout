@@ -1,5 +1,6 @@
 package Main;
 
+import Export.ArchiveOrders;
 import Export.OrderListing;
 import Export.OrderWriter;
 import Import.ImportDataForOrders;
@@ -60,7 +61,8 @@ public class OrderPlacement {
                 }
             }
         }
-        new OrderWriter(orderListing);
+        OrderWriter orderWriter = new OrderWriter(orderListing);
+        new ArchiveOrders(orderListing, orderWriter);
 
         executeTime.setEndTime();
         executeTime.show(data.getOrderSequence().length);

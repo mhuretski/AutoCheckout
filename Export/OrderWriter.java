@@ -9,6 +9,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class OrderWriter {
 
@@ -26,11 +27,17 @@ public class OrderWriter {
             getOrderXMLs(orders, admin, driver);
 
             writeOrderXMLs(orders, orderListing.getOutputFolder());
-        } catch (org.openqa.selenium.NoSuchElementException ne){
+        } catch (org.openqa.selenium.NoSuchElementException ne) {
             System.out.println("Couldn't open admin site.");
         }
 
         driver.quit();
+    }
+
+    private LinkedList<String> listOfFiles = new LinkedList<>();
+
+    LinkedList<String> getListOfFiles() {
+        return listOfFiles;
     }
 
     private void getOrderXMLs(ArrayList<ArrayList<String>> orders, SecureAdmin admin, WebDriver driver) {
@@ -71,9 +78,10 @@ public class OrderWriter {
         String scn = "UTF-8";
         for (int i = 0; i < orders.get(0).size(); i++) {
 
-            String fileName = orders.get(0).get(i) + space + orders.get(1).get(i);
+            String fileName = orders.get(0).get(i) + space + orders.get(1).get(i) + fileExtension;
+            listOfFiles.add(fileName);
             try {
-                PrintWriter writer = new PrintWriter(outputFolder + slash + fileName + fileExtension, scn);
+                PrintWriter writer = new PrintWriter(outputFolder + slash + fileName, scn);
                 writer.print(getOrderXML(orders, i));
                 writer.close();
             } catch (IOException e) {
