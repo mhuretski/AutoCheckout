@@ -16,17 +16,21 @@ public class OrderWriter {
         WebDriver driver = new ChromeDriver();
         new DriverTiming(2, driver);
 
-        /*open admin site*/
-        SecureAdmin admin = new SecureAdmin();
-        driver.get(admin.getAdminSite());
+        try {
+            /*open admin site*/
+            SecureAdmin admin = new SecureAdmin();
+            driver.get(admin.getAdminSite());
 
-        /*get sequence, number and order XML*/
-        ArrayList<ArrayList<String>> orders = orderListing.getOrders();
-        getOrderXMLs(orders, admin, driver);
+            /*get sequence, number and order XML*/
+            ArrayList<ArrayList<String>> orders = orderListing.getOrders();
+            getOrderXMLs(orders, admin, driver);
 
-        writeOrderXMLs(orders, orderListing.getOutputFolder());
+            writeOrderXMLs(orders, orderListing.getOutputFolder());
+        } catch (org.openqa.selenium.NoSuchElementException ne){
+            System.out.println("Couldn't open admin site.");
+        }
+
         driver.quit();
-
     }
 
     private void getOrderXMLs(ArrayList<ArrayList<String>> orders, SecureAdmin admin, WebDriver driver) {

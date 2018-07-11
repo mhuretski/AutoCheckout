@@ -8,6 +8,14 @@ import org.openqa.selenium.WebElement;
 
 public class PDP {
 
+    public PDP(String[] itemId, int[] itemQty, String site, WebDriver driver) {
+        for (int i = 0; i < itemId.length; i++) {
+            searchForItem(itemId[i], site, driver);
+            amountOfItemsToAdd(itemQty[i], driver);
+            addToBasket(driver);
+        }
+    }
+
     private void searchForItem(String itemId, String site, WebDriver driver) {
         new Site().open(site, driver);
 
@@ -25,14 +33,6 @@ public class PDP {
     private void addToBasket(WebDriver driver) {
         driver.findElement(By.cssSelector("input[type='submit']"))
                 .click();
-    }
-
-    public PDP(String[] itemId, int[] itemQty, String site, WebDriver driver) {
-        for (int i = 0; i < itemId.length; i++) {
-            searchForItem(itemId[i], site, driver);
-            amountOfItemsToAdd(itemQty[i], driver);
-            addToBasket(driver);
-        }
     }
 
 }

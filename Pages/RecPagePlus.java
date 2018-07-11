@@ -7,9 +7,28 @@ import org.openqa.selenium.WebDriver;
 
 public class RecPagePlus extends Wait {
 
-    private void oneTime(WebDriver driver) {
-        driver.findElement(By.cssSelector(".subscription-option-label"))
-                .click();
+    public RecPagePlus(String[] pills, String site, String hbpRepeat, WebDriver driver) {
+        SecureAdmin admin = new SecureAdmin();
+        turnOffErrors(admin, driver);
+
+        new RecPage(site, driver);
+        checkPlusPage(driver);
+        clearAllPills(driver);
+        addPills(pills, driver);
+        checkOutOfStock(driver);
+        oneTimeHBPlusIfNeeded(hbpRepeat, driver);
+        addToBasket(driver);
+        validateHBPlus(driver);
+
+        turnOnErrors(admin, driver);
+    }
+
+    private String addPillSelector = ".hpb-pill-click-to-add";
+
+    private void oneTimeHBPlusIfNeeded(String hbpRepeat, WebDriver driver) {
+        if (!hbpRepeat.equals("+"))
+            driver.findElement(By.cssSelector(".subscription-option-label"))
+                    .click();
     }
 
     private void addToBasket(WebDriver driver) {
@@ -25,43 +44,71 @@ public class RecPagePlus extends Wait {
 
     private void checkOutOfStock(WebDriver driver) {
         String removeOOSbtn = "//div[contains(@class,'hbp-pill-oos')]/ancestor::div[contains(@class,'hbp-pills-list')]//button[contains(@class,'hbp-pill-button-remove')]";
-        String approveRemove = "button.hbp-popup-button-primary[type='submit']";
         while (driver.findElements(By.xpath(removeOOSbtn)).size() > 0) {
             try {
                 driver.findElement(By.xpath(removeOOSbtn)).click();
-                waitLoaderAnimation(driver);
-                driver.findElement(By.cssSelector(approveRemove)).click();
-                waitHBPLoaderAnimation(driver);
-            } catch (org.openqa.selenium.WebDriverException exception){
+                approveRemoval(driver);
+            } catch (org.openqa.selenium.WebDriverException exception) {
                 System.out.println("Probably there are no OOS pills");
             }
         }
 
     }
 
-    private void turnOffErrors(SecureAdmin admin, WebDriver driver){
+    private void approveRemoval(WebDriver driver) {
+        waitLoaderAnimation(driver);
+        driver.findElement(By.cssSelector("button.hbp-popup-button-primary[type='submit']")).click();
+        waitHBPLoaderAnimation(driver);
+    }
+
+    private void turnOffErrors(SecureAdmin admin, WebDriver driver) {
         driver.get(admin.getCalc());
         driver.findElement(By.cssSelector("input[value='true']")).click();
         driver.findElement(By.cssSelector("input[type='submit']")).click();
     }
 
-    private void turnOnErrors(SecureAdmin admin, WebDriver driver){
+    private void turnOnErrors(SecureAdmin admin, WebDriver driver) {
         driver.get(admin.getCalc());
         driver.findElement(By.cssSelector("input[value='false']")).click();
         driver.findElement(By.cssSelector("input[type='submit']")).click();
     }
 
-    public RecPagePlus(String site, String hbpRepeat, WebDriver driver) {
-        SecureAdmin admin = new SecureAdmin();
-        turnOffErrors(admin, driver);
+    private void addPills(String[] pills, WebDriver driver) {
+        String searchWindow = ".hbp-search-title";
+        String pillSelectorStart = "[data-sku-id='";
+        String pillSelectorEnd = "']";
 
-        new RecPage(site, driver);
-        checkPlusPage(driver);
-        checkOutOfStock(driver);
-        if (!hbpRepeat.equals("+"))
-            oneTime(driver);
-        addToBasket(driver);
+        for (String pillId : pills) {
+            waitLoaderAnimation(driver);
+            driver.findElement(By.cssSelector(addPillSelector)).click();
+            waitLoaderAnimation(driver);
+            try {
+                driver.findElement(By.cssSelector(pillSelectorStart + pillId + pillSelectorEnd)).click();
+            } catch (org.openqa.selenium.NoSuchElementException ne) {
+                System.out.println("Pill " + pillId + "doesn't exist.");
+            }
+            /*waitAbsence works faster than explicit wait*/
+            waitAbsence(driver, searchWindow);
+        }
 
-        turnOnErrors(admin, driver);
     }
+
+    private void clearAllPills(WebDriver driver) {
+        String removePill = ".hbp-pill-button-remove";
+        while (driver.findElements(By.cssSelector(removePill)).size() > 0) {
+            driver.findElement(By.cssSelector(removePill)).click();
+            approveRemoval(driver);
+        }
+    }
+
+    private void validateHBPlus(WebDriver driver) {
+        if (driver.findElements(By.cssSelector(addPillSelector)).size() > 3) {
+            System.out.println("Not enough HBPlus pills.");
+        } else try {
+            driver.findElement(By.cssSelector(".act-remove.removeCartItem"));
+        } catch (org.openqa.selenium.NoSuchElementException ne) {
+            System.out.println("HBPlus isn't added to basket.");
+        }
+    }
+
 }

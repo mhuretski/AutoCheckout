@@ -9,6 +9,14 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 public class Basket extends Wait{
 
+    public Basket(String[] healthboxItem, int[] healthboxItemQty, String site, WebDriver driver) {
+        open(site, driver);
+        addHealthboxItem(healthboxItem, healthboxItemQty, driver);
+    }
+
+    public Basket() {
+    }
+
     void open(String site, WebDriver driver) {
         driver.get(new Site().chosenSite(site) + "basket/basket.jsp");
     }
@@ -56,14 +64,6 @@ public class Basket extends Wait{
 
     private boolean isBasketEmpty(WebDriver driver) {
         return driver.findElements(By.cssSelector("section.s-basket-empty")).size() == 0;
-    }
-
-    public Basket(String[] healthboxItem, int[] healthboxItemQty, String site, WebDriver driver) {
-        open(site, driver);
-        addHealthboxItem(healthboxItem, healthboxItemQty, driver);
-    }
-
-    public Basket() {
     }
 
 }

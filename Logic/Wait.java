@@ -28,6 +28,16 @@ public class Wait {
                 .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(cssSelector)));
     }
 
+    protected void waitAbsence(WebDriver driver, String cssSelector) {
+        while (driver.findElements(By.cssSelector(cssSelector)).size() != 0)
+            waitAbsence(driver, cssSelector);
+    }
+
+    protected void waitCssAbsence(WebDriver driver, String cssSelector) {
+        new WebDriverWait(driver, timeOut)
+                .until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(cssSelector)));
+    }
+
     protected void waitClickableElem(WebDriver driver, WebElement webElement) {
         new WebDriverWait(driver, timeOut)
                 .until(ExpectedConditions.elementToBeClickable(webElement));

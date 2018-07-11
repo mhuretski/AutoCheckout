@@ -30,9 +30,28 @@ class InputValidation {
         String plus = "+";
         String minus = "-";
         for (int i = 0; i < newLoyaltyUser.length; i++) {
-            if (newLoyaltyUser[i].equals(plus) && !loyaltyCard[i].equals(minus)){
+            if (newLoyaltyUser[i].equals(plus) && !loyaltyCard[i].equals(minus)) {
                 System.err.println("New loyalty user can't have an existing card. Check input file.");
                 System.exit(1);
+            }
+        }
+    }
+
+    void HBPlus(String[] hbPlus, String[][] pills) {
+        String plus = "+";
+        String minus = "-";
+        for (int i = 0; i < hbPlus.length; i++) {
+            if (hbPlus[i].equals(plus)) {
+                if (pills[i].length < 2 || pills[i].length > 5) {
+                    System.err.println("Amount of pills should be in range of 2 to 5. Check input file.");
+                    System.exit(1);
+                }
+                for (int j = 0; j < pills[i].length; j++) {
+                    if (pills[i][j].contains(minus)) {
+                        System.err.println("Pills should be present in HBPlus. Check input file.");
+                        System.exit(1);
+                    }
+                }
             }
         }
     }

@@ -16,11 +16,12 @@ public class OrderCreation {
                          int[] normalItemQty,
                          String[] normalRepeatOrder,
                          String hbPlus,
+                         String[] pills,
                          String hbpRepeat,
                          String site,
                          String newLoyaltyUser,
                          String loyaltyCard,
-                         String coupon,
+                         String[] coupons,
                          String username,
                          String password,
                          WebDriver driver,
@@ -34,7 +35,7 @@ public class OrderCreation {
         if (isHealthbox || healthboxItem.length == 1 && !healthboxItem[0].equals("-"))
             new RecPage(healthbox, healthboxItem, site, driver);
         if (hbPlus.equals("+")) {
-            new RecPagePlus(site, hbpRepeat, driver);
+            new RecPagePlus(pills, site, hbpRepeat, driver);
         }
 
         /*change qTy of healthbox items*/
@@ -62,9 +63,9 @@ public class OrderCreation {
             new Loyalty(site, driver).insertExistingLoyaltyCard(loyaltyCard, driver);
         }
 
-        /*add coupon*/
-        if (!coupon.equals("-")) {
-            new Loyalty(site, driver).insertCoupon(coupon, driver);
+        /*add coupons*/
+        if (!coupons[0].equals("-")) {
+            new Loyalty(site, driver).insertCoupon(coupons, driver);
         }
 
         /*choose repeat order*/

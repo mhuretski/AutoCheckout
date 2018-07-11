@@ -7,6 +7,19 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 public class RecPage {
+
+    public RecPage(int healthbox, String[] itemId, String site, WebDriver driver) {
+        openHLP(site, driver);
+        openRecsPage(driver);
+        whatHealthbox(healthbox, itemId, driver);
+
+    }
+
+    RecPage(String site, WebDriver driver) {
+        openHLP(site, driver);
+        openRecsPage(driver);
+    }
+
     private void openHLP(String site, WebDriver driver) {
         driver.get(new Site().chosenSite(site) + "healthbox/healthbox.jsp");
     }
@@ -65,18 +78,6 @@ public class RecPage {
         if (healthbox == 4) {
             addToBasketNormalHealthbox(itemId, driver);
         }
-    }
-
-    public RecPage(int healthbox, String[] itemId, String site, WebDriver driver) {
-        openHLP(site, driver);
-        openRecsPage(driver);
-        whatHealthbox(healthbox, itemId, driver);
-
-    }
-
-    RecPage(String site, WebDriver driver) {
-        openHLP(site, driver);
-        openRecsPage(driver);
     }
 
 }
