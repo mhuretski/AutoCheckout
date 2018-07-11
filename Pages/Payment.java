@@ -9,20 +9,23 @@ public class Payment extends Wait {
 
     public Payment(WebDriver driver) {
         payByCard(driver);
+        additionalBtns(driver);
+        switchToFrame(driver);
+        payFast(driver);
+    }
 
+    private void additionalBtns(WebDriver driver) {
         /*Depends on site configuration*/
-        if (driver.findElements(By.xpath("//input[@name='tc']")).size() > 0) {
+        String termsXpath = "//input[@name='tc']";
+        if (driver.findElements(By.xpath(termsXpath)).size() > 0) {
             try {
-                agreeToTerms(driver);
+                agreeToTerms(termsXpath, driver);
                 enterBillingSection(driver);
                 goToPayment(driver);
             } catch (org.openqa.selenium.WebDriverException ne) {
                 /*just skip*/
             }
         }
-
-        switchToFrame(driver);
-        payFast(driver);
     }
 
     private void payByCard(WebDriver driver) {
@@ -56,8 +59,8 @@ public class Payment extends Wait {
         driver.switchTo().defaultContent();
     }
 
-    private void agreeToTerms(WebDriver driver) {
-        driver.findElement(By.xpath("//input[@name='tc']"))
+    private void agreeToTerms(String termsXpath, WebDriver driver) {
+        driver.findElement(By.xpath(termsXpath))
                 .click();
     }
 
@@ -72,6 +75,7 @@ public class Payment extends Wait {
 
     }
 
+    /*for unsaved card*/
 //    private void pay(WebDriver driver) {
 //
 //        switchToFrame(driver);

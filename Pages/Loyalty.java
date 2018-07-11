@@ -1,11 +1,10 @@
 package Pages;
 
+import Logic.Wait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import static java.lang.Thread.sleep;
-
-public class Loyalty {
+public class Loyalty extends Wait {
 
     public Loyalty(String site, WebDriver driver) {
         new Basket().open(site, driver);
@@ -23,15 +22,11 @@ public class Loyalty {
         driver.findElement(By.id("addRflCard")).click();
     }
 
-    public void insertCoupon(String[] coupons, WebDriver driver) {
+    public void insertCoupons(String[] coupons, WebDriver driver) {
         for (String coupon : coupons) {
             driver.findElement(By.id("discountCode")).sendKeys(coupon);
             driver.findElement(By.id("addDiscount")).click();
-            try {
-                sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            waitLoaderAnimation(driver);
         }
 
     }

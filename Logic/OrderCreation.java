@@ -1,7 +1,7 @@
 package Logic;
 
-import Export.OrderLogging;
 import Export.OrderListing;
+import Export.OrderLogging;
 import Pages.*;
 import org.openqa.selenium.WebDriver;
 
@@ -65,7 +65,7 @@ public class OrderCreation {
 
         /*add coupons*/
         if (!coupons[0].equals("-")) {
-            new Loyalty(site, driver).insertCoupon(coupons, driver);
+            new Loyalty(site, driver).insertCoupons(coupons, driver);
         }
 
         /*choose repeat order*/

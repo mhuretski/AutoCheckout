@@ -10,15 +10,22 @@ public class Checkout extends Wait {
     public Checkout(String site, WebDriver driver) {
         open(site, driver);
         /*for the first order*/
-        try {
-            chooseAddress(driver);
-            waitLoaderAnimation(driver);
-            chooseDeliveryButton(driver);
-        } catch (org.openqa.selenium.NoSuchElementException ne){
-            System.out.println("Address is already chosen.");
-        }
+        additionalBtns(driver);
 
         continueToPayment(driver);
+    }
+
+    private void additionalBtns(WebDriver driver) {
+        String addressSelector = "input.js-delivery-address-radio-selector";
+        if (driver.findElements(By.cssSelector(addressSelector)).size() > 0) {
+            try {
+                chooseAddress(addressSelector, driver);
+                waitLoaderAnimation(driver);
+                chooseDeliveryButton(driver);
+            } catch (org.openqa.selenium.NoSuchElementException ne) {
+                /*just skip*/
+            }
+        }
     }
 
     private void open(String site, WebDriver driver) {
@@ -30,8 +37,8 @@ public class Checkout extends Wait {
                 .click();
     }
 
-    private void chooseAddress(WebDriver driver) {
-        driver.findElement(By.cssSelector("input.js-delivery-address-radio-selector"))
+    private void chooseAddress(String addressSelector, WebDriver driver) {
+        driver.findElement(By.cssSelector(addressSelector))
                 .click();
     }
 
