@@ -4,15 +4,16 @@ import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-public class ArchiveOrders{
+public class ArchiveOrders {
 
-    public ArchiveOrders(OrderListing orderListing, OrderWriter orderWriter){
+    public ArchiveOrders(OrderListing orderListing, OrderWriter orderWriter) {
         pushToArchive(orderListing, orderWriter);
+        deleteUnarchivedFiles(orderListing, orderWriter);
     }
 
     private void pushToArchive(OrderListing orderListing, OrderWriter orderWriter) {
 
-        String zipFile = orderListing.getOutputFolder() + "orderXMLs.zip";
+        String zipFile = zipFileName(orderListing, orderWriter);
         try {
             byte[] buffer = new byte[1024];
             FileOutputStream fileOutput = new FileOutputStream(zipFile);
@@ -39,6 +40,23 @@ public class ArchiveOrders{
             fileInput.close();
         }
         zipOutput.close();
+    }
+
+    private String zipFileName(OrderListing orderListing, OrderWriter orderWriter) {
+        int amountOfOrders = orderWriter.getListOfFiles().size();
+        String zipName = orderListing.getOutputFolder() + String.valueOf(amountOfOrders);
+        if (amountOfOrders != 1)
+            zipName += " orderXMLs.zip";
+        else zipName += " orderXML.zip";
+        return zipName;
+    }
+
+    private void deleteUnarchivedFiles(OrderListing orderListing, OrderWriter orderWriter) {
+        for (String fileName : orderWriter.getListOfFiles()) {
+            File srcFile = new File(orderListing.getOutputFolder() + fileName);
+            if (!srcFile.delete())
+                System.out.println(fileName + " is not found.");
+        }
     }
 
 }

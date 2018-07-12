@@ -71,10 +71,9 @@ public class OrderCreation {
         /*choose repeat order*/
         new RepeatOrder(healthboxItem, hbRepeatOrder, normalItem, normalRepeatOrder, site, driver);
 
-        new DriverTiming(4, driver);
         new Checkout(site, driver);
         new Payment(driver);
-        new OrderLogging().success(orderSequence, healthboxItem, normalItem, driver, orderListing);
+        new OrderLogging().success(orderSequence, hbPlus, healthboxItem, normalItem, driver, orderListing);
 
         driver.quit();
     }

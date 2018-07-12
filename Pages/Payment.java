@@ -4,17 +4,18 @@ import Logic.Wait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 public class Payment extends Wait {
 
     public Payment(WebDriver driver) {
         payByCard(driver);
-        additionalBtns(driver);
+        additionalButtons(driver);
         switchToFrame(driver);
-        payFast(driver);
+        pay(driver);
     }
 
-    private void additionalBtns(WebDriver driver) {
+    private void additionalButtons(WebDriver driver) {
         /*Depends on site configuration*/
         String termsXpath = "//input[@name='tc']";
         if (driver.findElements(By.xpath(termsXpath)).size() > 0) {
@@ -24,6 +25,7 @@ public class Payment extends Wait {
                 goToPayment(driver);
             } catch (org.openqa.selenium.WebDriverException ne) {
                 /*just skip*/
+
             }
         }
     }
@@ -75,24 +77,20 @@ public class Payment extends Wait {
 
     }
 
-    /*for unsaved card*/
-//    private void pay(WebDriver driver) {
-//
-//        switchToFrame(driver);
-//
-//        WebElement cardNumber = driver.findElement(By.cssSelector("input#payment-cardnumber"));
-//        cardNumber.click();
-//        cardNumber.sendKeys("4111111111111111");
-//
-//        driver.findElement(By.cssSelector("input#payment-cardholdername")).sendKeys("PETER CHEATER");
-//
-//        Select month = new Select(driver.findElement(By.cssSelector("select#payment-expirydate-month")));
-//        month.selectByIndex(4);
-//
-//        Select year = new Select(driver.findElement(By.cssSelector("select#payment-expirydate-year")));
-//        year.selectByIndex(4);
-//
-//        payFast(driver);
-//    }
+    private void pay(WebDriver driver) {
+
+        WebElement cardNumber = driver.findElement(By.cssSelector("input#payment-cardnumber"));
+        /*for unsaved card*/
+        if (driver.findElements(By.cssSelector(".checkout-fieldset-item .checkbox-label")).size() != 0) {
+            cardNumber.click();
+            cardNumber.sendKeys("4111111111111111");
+            driver.findElement(By.cssSelector("input#payment-cardholdername")).sendKeys("PETER CHEATER");
+            Select month = new Select(driver.findElement(By.cssSelector("select#payment-expirydate-month")));
+            month.selectByIndex(4);
+            Select year = new Select(driver.findElement(By.cssSelector("select#payment-expirydate-year")));
+            year.selectByIndex(4);
+        }
+        payFast(driver);
+    }
 
 }
