@@ -8,7 +8,8 @@ import org.openqa.selenium.WebElement;
 public class Login {
 
     public Login(String username, String password, String site, WebDriver driver) {
-        login(username, password, site, driver);
+        if (!username.equals("g"))
+            login(username, password, site, driver);
     }
 
     private void login(String username, String password, String site, WebDriver driver) {

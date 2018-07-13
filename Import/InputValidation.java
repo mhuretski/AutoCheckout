@@ -16,6 +16,32 @@ class InputValidation {
         System.exit(1);
     }
 
+    void validateDelivery(String[] deliveryType){
+        String d = "d";
+        String c = "c";
+        for (String aDelivery : deliveryType) {
+            if (!(aDelivery.equals(d) || aDelivery.equals(c))){
+                System.err.println("Delivery hasn't passed validation. \n" +
+                        "Delivery should \"d\" for delivery or \"c\" for collection. \n" +
+                        "Check input file.");
+                System.exit(1);
+            }
+        }
+    }
+
+    void validatePayment(String[] paymentType){
+        String p = "p";
+        String c = "c";
+        for (String aDelivery : paymentType) {
+            if (!(aDelivery.equals(p) || aDelivery.equals(c))){
+                System.err.println("Payment hasn't passed validation. \n" +
+                        "Payment should \"c\" for card or \"p\" for PayPal. \n" +
+                        "Check input file.");
+                System.exit(1);
+            }
+        }
+    }
+
     void healthboxType(int[] healthbox, String[][] healthboxItem) {
         for (int i = 0; i < healthbox.length; i++) {
             if ((healthbox[i] == 1 || healthbox[i] == 3 || healthbox[i] == 4)

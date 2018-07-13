@@ -8,14 +8,39 @@ import org.openqa.selenium.support.ui.Select;
 
 public class Payment extends Wait {
 
-    public Payment(WebDriver driver) {
-        payByCard(driver);
-        additionalButtons(driver);
-        switchToFrame(driver);
-        pay(driver);
+    public Payment(String deliveryType, String username, String paymentType, WebDriver driver) {
+        choosePaymentType(deliveryType, username, paymentType, driver);
     }
 
-    private void additionalButtons(WebDriver driver) {
+    private void choosePaymentType(String deliveryType, String username, String paymentType, WebDriver driver) {
+        if (paymentType.equals("c"))
+            payByCard(deliveryType, username, driver);
+        else payByPayPal(driver);
+    }
+
+    private void payByPayPal(WebDriver driver) {
+        waitLoaderAnimation(driver);
+        String payPalSelector = "//input[contains(@class,'js-checkout-payment-type-switch-paypal')]/ancestor::label";
+        WebElement choosePayPal = driver.findElement(By.xpath(payPalSelector));
+        waitClickableElem(driver, choosePayPal);
+        waitClickableXpath(driver, payPalSelector);
+        choosePayPal.click();
+
+        try {
+            WebElement payNow = driver.findElement(By.cssSelector(".js-paypal-create-account-submit"));
+            payNow.click();
+        } catch (org.openqa.selenium.WebDriverException ne) {
+            /*just skip*/
+        }
+
+        WebElement phoneNumber = driver.findElement(By.cssSelector("input[name='ContactPhone']:not([type='hidden'])"));
+        phoneNumber.sendKeys("1");
+
+        WebElement identificationOK = driver.findElement(By.cssSelector("input[type='submit'][value='IDENTIFICATION OK']:not([type='hidden'])"));
+        identificationOK.click();
+    }
+
+    private void additionalButtons(String username, WebDriver driver) {
         /*Depends on site configuration*/
         String termsXpath = "//input[@name='tc']";
         if (driver.findElements(By.xpath(termsXpath)).size() > 0) {
@@ -25,12 +50,19 @@ public class Payment extends Wait {
                 goToPayment(driver);
             } catch (org.openqa.selenium.WebDriverException ne) {
                 /*just skip*/
-
             }
         }
+        if (username.equals("g")) {
+            try {
+                goToPayment(driver);
+            } catch (org.openqa.selenium.WebDriverException ne) {
+                /*just skip*/
+            }
+        }
+
     }
 
-    private void payByCard(WebDriver driver) {
+    private void payByCard(String deliveryType, String username, WebDriver driver) {
         waitLoaderAnimation(driver);
         String cardSelector = "//input[contains(@class,'js-checkout-payment-type-switch-cc')]/ancestor::label";
         WebElement chooseCard = driver.findElement(By.xpath(cardSelector));
@@ -41,6 +73,25 @@ public class Payment extends Wait {
             chooseCard.click();
         }
         waitLoaderAnimation(driver);
+        guestCollectDetails(deliveryType, driver);
+        waitLoaderAnimation(driver);
+        additionalButtons(username, driver);
+        switchToFrame(driver);
+        pay(username, driver);
+    }
+
+    private void guestCollectDetails(String deliveryType, WebDriver driver) {
+        if (deliveryType.equals("c")) {
+            try {
+                driver.findElement(By.id("checkout_form_postcode_lookup")).sendKeys("1");
+                driver.findElement(By.cssSelector(".btn-secondary.checkout-fieldset-main-doubled.js-lookup-trigger")).click();
+                waitLoaderAnimation(driver);
+                driver.findElement(By.cssSelector(".js-select-qas-address")).click();
+                waitLoaderAnimation(driver);
+            } catch (org.openqa.selenium.NoSuchElementException ne) {
+                /*just skip*/
+            }
+        }
     }
 
     private void switchToFrame(WebDriver driver) {
@@ -72,16 +123,25 @@ public class Payment extends Wait {
     }
 
     private void goToPayment(WebDriver driver) {
-        driver.findElement(By.cssSelector("button.checkout-submit-btn.js-checkout-billing-address-submit"))
-                .click();
-
+        String goToPaymentSelector = "button.checkout-submit-btn.js-checkout-billing-address-submit";
+        try {
+            while (driver.findElements(By.cssSelector(goToPaymentSelector)).size() != 0)
+                driver.findElement(By.cssSelector(goToPaymentSelector))
+                        .click();
+        } catch (org.openqa.selenium.NoSuchElementException ne) {
+            /*just skip*/
+        }
     }
 
-    private void pay(WebDriver driver) {
+    private void pay(String username, WebDriver driver) {
+        enterCardCredentials(username, driver);
+        payFast(driver);
+    }
 
-        WebElement cardNumber = driver.findElement(By.cssSelector("input#payment-cardnumber"));
-        /*for unsaved card*/
-        if (driver.findElements(By.cssSelector(".checkout-fieldset-item .checkbox-label")).size() != 0) {
+    private void enterCardCredentials(String username, WebDriver driver) {
+        /*for unsaved card or guest*/
+        if (driver.findElements(By.cssSelector(".checkout-fieldset-item .checkbox-label")).size() != 0 || username.equals("g")) {
+            WebElement cardNumber = driver.findElement(By.cssSelector("input#payment-cardnumber"));
             cardNumber.click();
             cardNumber.sendKeys("4111111111111111");
             driver.findElement(By.cssSelector("input#payment-cardholdername")).sendKeys("PETER CHEATER");
@@ -90,7 +150,6 @@ public class Payment extends Wait {
             Select year = new Select(driver.findElement(By.cssSelector("select#payment-expirydate-year")));
             year.selectByIndex(4);
         }
-        payFast(driver);
     }
 
 }

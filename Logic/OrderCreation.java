@@ -22,6 +22,8 @@ public class OrderCreation {
                          String newLoyaltyUser,
                          String loyaltyCard,
                          String[] coupons,
+                         String deliveryType,
+                         String paymentType,
                          String username,
                          String password,
                          WebDriver driver,
@@ -71,8 +73,8 @@ public class OrderCreation {
         /*choose repeat order*/
         new RepeatOrder(healthboxItem, hbRepeatOrder, normalItem, normalRepeatOrder, site, driver);
 
-        new Checkout(site, driver);
-        new Payment(driver);
+        new Checkout(username, deliveryType, site, driver);
+        new Payment(deliveryType, username, paymentType, driver);
         new OrderLogging().success(orderSequence, hbPlus, healthboxItem, normalItem, driver, orderListing);
 
         driver.quit();

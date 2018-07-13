@@ -21,7 +21,7 @@ public class OrderPlacement {
         ImportDataForOrders data = new ImportDataForOrders();
         OrderListing orderListing = new OrderListing();
 
-        int amountOfAttemptsBeforeExit = 10;
+        int amountOfAttemptsBeforeExit = executeTime.setAttempts(10);
         int i = 0;
         for (; i < data.getOrderSequence().length; i++) {
             if (amountOfAttemptsBeforeExit >= 0) {
@@ -43,6 +43,8 @@ public class OrderPlacement {
                             data.getNewLoyaltyUser()[i],
                             data.getLoyaltyCard()[i],
                             data.getCoupons()[i],
+                            data.getDeliveryType()[i],
+                            data.getPaymentType()[i],
                             data.getUsername()[i],
                             data.getPassword()[i],
                             driver,
@@ -65,7 +67,7 @@ public class OrderPlacement {
         new ArchiveOrders(orderListing, orderWriter);
 
         executeTime.setEndTime();
-        executeTime.show(data.getOrderSequence().length);
+        executeTime.show(amountOfAttemptsBeforeExit, data.getOrderSequence().length);
     }
 
 }

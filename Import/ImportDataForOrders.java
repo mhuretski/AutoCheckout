@@ -25,6 +25,8 @@ public class ImportDataForOrders {
     private String[] newLoyaltyUser;
     private String[] loyaltyCard;
     private String[][] coupons;
+    private String[] deliveryType;
+    private String[] paymentType;
     private String[] username;
     private String[] password;
 
@@ -45,6 +47,8 @@ public class ImportDataForOrders {
         LinkedList<String> newLoyaltyUserList = new LinkedList<>();
         LinkedList<String> loyaltyCardList = new LinkedList<>();
         LinkedList<String> couponsList = new LinkedList<>();
+        LinkedList<String> deliveryTypeList = new LinkedList<>();
+        LinkedList<String> paymentTypeList = new LinkedList<>();
         LinkedList<String> usernameList = new LinkedList<>();
         LinkedList<String> passwordList = new LinkedList<>();
 
@@ -69,8 +73,10 @@ public class ImportDataForOrders {
                     newLoyaltyUserList.add(line[12]);
                     loyaltyCardList.add(line[13]);
                     couponsList.add(line[14]);
-                    usernameList.add(line[15]);
-                    passwordList.add(line[16]);
+                    deliveryTypeList.add(line[15]);
+                    paymentTypeList.add(line[16]);
+                    usernameList.add(line[17]);
+                    passwordList.add(line[18]);
                 }
             }
             reader.close();
@@ -95,6 +101,8 @@ public class ImportDataForOrders {
         newLoyaltyUser = transform.transformToArrayOneString(newLoyaltyUserList);
         loyaltyCard = transform.transformToArrayOneString(loyaltyCardList);
         coupons = transform.transformToArrayTwo(couponsList);
+        deliveryType = transform.transformToArrayOneString(deliveryTypeList);
+        paymentType = transform.transformToArrayOneString(paymentTypeList);
         username = transform.transformToArrayOneString(usernameList);
         password = transform.transformToArrayOneString(passwordList);
 
@@ -104,6 +112,8 @@ public class ImportDataForOrders {
         validate.healthboxType(healthbox, healthboxItem);
         validate.loyalty(newLoyaltyUser, loyaltyCard);
         validate.HBPlus(hbPlus, pills);
+        validate.validateDelivery(deliveryType);
+        validate.validatePayment(paymentType);
 
     }
 
@@ -173,6 +183,14 @@ public class ImportDataForOrders {
 
     public String[][] getPills() {
         return pills;
+    }
+
+    public String[] getDeliveryType() {
+        return deliveryType;
+    }
+
+    public String[] getPaymentType() {
+        return paymentType;
     }
 
 }

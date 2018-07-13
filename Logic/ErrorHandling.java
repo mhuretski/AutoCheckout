@@ -15,11 +15,13 @@ public class ErrorHandling {
 
         e.printStackTrace();
         driver.quit();
-        try {
-            new Basket().remove(username, password, site);
-        } catch (org.openqa.selenium.WebDriverException exInBasket) {
-            exInBasket.printStackTrace();
-            new OrderLogging().nonEmptiedBasket(orderSequence, orderListing);
+        if (!username.equals("g")) {
+            try {
+                new Basket().remove(username, password, site);
+            } catch (org.openqa.selenium.WebDriverException exInBasket) {
+                exInBasket.printStackTrace();
+                new OrderLogging().nonEmptiedBasket(orderSequence, orderListing);
+            }
         }
     }
 

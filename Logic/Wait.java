@@ -10,8 +10,17 @@ public class Wait {
 
     private int timeOut = 2;
 
+    private String getAnimation(){
+        return ".ajax-loader-bg[style*='none']";
+    }
+
     protected void waitLoaderAnimation(WebDriver driver) {
-        driver.findElement(By.cssSelector(".ajax-loader-bg[style='display: none;']"));
+        while (driver.findElements(By.cssSelector(getAnimation())).size() == 0)
+        try {
+            driver.findElement(By.cssSelector(getAnimation()));
+        } catch (org.openqa.selenium.NoSuchElementException ne) {
+            /*just skip*/
+        }
     }
 
     protected void waitHBPLoaderAnimation(WebDriver driver) {
