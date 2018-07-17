@@ -23,13 +23,13 @@ public class Checkout extends Wait {
             enterEmail.sendKeys("userDoesNotExist@noUser.NotCom");
 
             String continueAsGuest = "button#js-welcome-guest-submit";
-            while (driver.findElements(By.cssSelector(".checkout-create-account.hidden")).size() != 0) {
-                try {
-                    driver.findElement(By.cssSelector(continueAsGuest));
-                } catch (org.openqa.selenium.NoSuchElementException ne) {
-                    /*just skip*/
-                }
-            }
+//            while (driver.findElements(By.cssSelector(".checkout-create-account.hidden")).size() > 0) {
+//                try {
+//                    driver.findElement(By.cssSelector(continueAsGuest));
+//                } catch (org.openqa.selenium.NoSuchElementException ne) {
+//                    /*just skip*/
+//                }
+//            }
             driver.findElement(By.cssSelector(continueAsGuest)).click();
             waitLoaderAnimation(driver);
         }
@@ -37,7 +37,7 @@ public class Checkout extends Wait {
 
     private void deliveryOrCollection(String username, String deliveryType, WebDriver driver) {
         if (deliveryType.equals("d"))
-            delivery(username, deliveryType, driver);
+            delivery(username, driver);
         else collection(driver);
     }
 
@@ -53,9 +53,15 @@ public class Checkout extends Wait {
         chooseStore.click();
 
         waitLoaderAnimation(driver);
-        WebElement chooseStandardDeliveryTime = driver.findElement(By.cssSelector(".checkout-delivery-choose-option .section"));
-        chooseStandardDeliveryTime.click();
-        waitLoaderAnimation(driver);
+        try {
+            do {
+                WebElement chooseStandardDeliveryTime = driver.findElement(By.cssSelector(".checkout-delivery-choose-option .section"));
+                chooseStandardDeliveryTime.click();
+                waitLoaderAnimation(driver);
+            } while (driver.findElements(By.cssSelector(".checkout-submit-btn.js-checkout-collection-details-submit")).size() == 0);
+        } catch (org.openqa.selenium.NoSuchElementException ne) {
+            System.err.println("Can't click \"Continue to payment\"" + ne);
+        }
     }
 
     private void randomPopUp(WebDriver driver) {
@@ -96,23 +102,22 @@ public class Checkout extends Wait {
         }
     }
 
-    private void delivery(String username, String deliveryType, WebDriver driver) {
+    private void delivery(String username, WebDriver driver) {
         String guest = "g";
         if (username.equals(guest)) {
-            userDetails(deliveryType, driver);
-            firstOrderInNewAccount(username, driver);
-            enterPhoneNumber(driver);
-            chooseDeliveryForGuest(driver);
+            guestOrder(driver);
+//            chooseDeliveryForGuest(driver);
         }
-        if (driver.findElements(By.cssSelector("button.checkout-submit-btn")).size() != 0) {
+        if ((driver.findElements(By.cssSelector("button.checkout-submit-btn")).size() == 0
+                || driver.findElements(By.id("checkout_form_postcode_lookup")).size() != 0)
+                && !username.equals(guest)) {
             waitLoaderAnimation(driver);
-        } else if (!username.equals(guest)) {
-            firstOrderInNewAccount(username, driver);
+            firstOrder(username, driver);
             additionalButtons(driver);
         }
     }
 
-    private void chooseDeliveryForGuest(WebDriver driver){
+    private void chooseDeliveryForGuest(WebDriver driver) {
         driver.findElement(By.cssSelector("button.checkout-submit-btn.js-delivery-address-submit-button")).click();
     }
 
@@ -133,23 +138,53 @@ public class Checkout extends Wait {
         }
     }
 
-    private void firstOrderInNewAccount(String username, WebDriver driver) {
+    private void guestOrder(WebDriver driver) {
         String deliveryNotChosen = ".js-checkout-delivery-method-selector[value='delivery'].input-radio.js-checkout-delivery-method-selector:not(valid)";
-        try {
+
+        if (driver.findElements(By.id("checkout_form_postcode_lookup")).size() == 0)
             driver.findElement(By.cssSelector(deliveryNotChosen)).click();
-            driver.findElement(By.id("checkout_form_postcode_lookup")).sendKeys("1");
-            driver.findElement(By.cssSelector(".btn-secondary.checkout-fieldset-main-doubled")).click();
-            waitLoaderAnimation(driver);
+        driver.findElement(By.id("checkout_form_postcode_lookup")).sendKeys("1");
+        driver.findElement(By.cssSelector(".btn-secondary.checkout-fieldset-main-doubled")).click();
+        waitLoaderAnimation(driver);
+
+        do {
             driver.findElement(By.cssSelector(".js-select-qas-address")).click();
             waitLoaderAnimation(driver);
-
-            if (!username.equals("g")) {
-                waitAbsence(driver, ".js-delivery-address-submit-button[disabled]");
-                driver.findElement(By.cssSelector(".js-delivery-address-submit-button")).click();
-            }
-        } catch (org.openqa.selenium.NoSuchElementException ne) {
-            /*just skip*/
         }
+        while (driver.findElements(By.cssSelector(".deliver_to_view_label.label")).size() == 0);
+
+        userDetailsGuest(driver);
+        waitAbsence(driver, ".js-delivery-address-submit-button[disabled]");
+        waitLoaderAnimation(driver);
+
+        String chooseDeliverySelector = ".js-delivery-method-holder .js-delivery-address-submit-button";
+
+        waitClickableCSS(driver, chooseDeliverySelector);
+        driver.findElement(By.cssSelector(chooseDeliverySelector)).click();
+
+        waitLoaderAnimation(driver);
+
+    }
+
+    private void firstOrder(String username, WebDriver driver) {
+        String deliveryNotChosen = ".js-checkout-delivery-method-selector[value='delivery'].input-radio.js-checkout-delivery-method-selector:not(valid)";
+
+        driver.findElement(By.cssSelector(deliveryNotChosen)).click();
+        driver.findElement(By.id("checkout_form_postcode_lookup")).sendKeys("1");
+        driver.findElement(By.cssSelector(".btn-secondary.checkout-fieldset-main-doubled")).click();
+        waitLoaderAnimation(driver);
+
+        while (driver.findElements(By.cssSelector(".deliver_to_view_label.label")).size() == 0) {
+            driver.findElement(By.cssSelector(".js-select-qas-address")).click();
+            waitLoaderAnimation(driver);
+        }
+        if (username.equals("g")) {
+            userDetailsGuest(driver);
+        }
+        waitAbsence(driver, ".js-delivery-address-submit-button[disabled]");
+
+        String chooseDeliverySelector = ".js-delivery-address-submit-button";
+        driver.findElement(By.cssSelector(chooseDeliverySelector)).click();
 
     }
 
@@ -159,7 +194,7 @@ public class Checkout extends Wait {
 
     private void continueToPayment(String username, String deliveryType, WebDriver driver) {
         if (username.equals("g") && deliveryType.equals("c"))
-            userDetails(deliveryType, driver);
+            userDetailsGuest(driver);
 
         String continuePaymentCSS;
         if (deliveryType.equals("d"))
@@ -182,7 +217,7 @@ public class Checkout extends Wait {
 
     }
 
-    private void userDetails(String deliveryType, WebDriver driver) {
+    private void userDetailsGuest(WebDriver driver) {
         String firstName = "fieldset:not(.hidden) input#checkout_form_first_name";
         while (driver.findElements(By.cssSelector(firstName)).size() == 0) {
             try {
@@ -195,8 +230,7 @@ public class Checkout extends Wait {
         WebElement lastName = driver.findElement(By.cssSelector("fieldset:not(.hidden) input#checkout_form_last_name"));
         lastName.sendKeys("Sladkyi");
 
-        if (deliveryType.equals("c"))
-            enterPhoneNumber(driver);
+        enterPhoneNumber(driver);
     }
 
     private void enterPhoneNumber(WebDriver driver) {

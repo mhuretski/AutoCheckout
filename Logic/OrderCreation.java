@@ -2,6 +2,7 @@ package Logic;
 
 import Export.OrderListing;
 import Export.OrderLogging;
+import Export.PriceTracking;
 import Pages.*;
 import org.openqa.selenium.WebDriver;
 
@@ -73,9 +74,11 @@ public class OrderCreation {
         /*choose repeat order*/
         new RepeatOrder(healthboxItem, hbRepeatOrder, normalItem, normalRepeatOrder, site, driver);
 
+        PriceTracking trackedPrices = new PriceTracking(healthboxItem, normalItem, hbPlus, site, driver);
+
         new Checkout(username, deliveryType, site, driver);
         new Payment(deliveryType, username, paymentType, driver);
-        new OrderLogging().success(orderSequence, hbPlus, healthboxItem, normalItem, driver, orderListing);
+        new OrderLogging().success(orderSequence, driver, orderListing, trackedPrices.getPriceForEachItem());
 
         driver.quit();
     }

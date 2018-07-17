@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedList;
 
 public class OrderLogging extends Wait {
 
@@ -19,7 +20,7 @@ public class OrderLogging extends Wait {
                         new FileWriter(orderListing.getOutputFolder() + "orders_details.txt", true)));
     }
 
-    private void orderStuff(String hbPlus, String[] healthboxItem, String[] normalItem, int orderSequence, PrintWriter writer, WebDriver driver, OrderListing orderListing) {
+    private void orderStuff(int orderSequence, PrintWriter writer, WebDriver driver, OrderListing orderListing, LinkedList<String> prices) {
         WebElement orderNumberElem = driver.findElement(By.cssSelector("span.order-number"));
         driver.findElement(By.cssSelector("i.ico-s.ico-expand.ico-20"))
                 .click();
@@ -30,45 +31,18 @@ public class OrderLogging extends Wait {
         orderListing.addOrderNumber(orderNumber);
 
         getTotal(writer, driver);
-        getAllPrices(hbPlus, healthboxItem, normalItem, writer, driver);
+        getAllPrices(prices, writer);
 
     }
 
-    private void getAllPrices(String hbPlus, String[] healthboxItem, String[] normalItem, PrintWriter writer, WebDriver driver) {
-        getItemPrice(healthboxItem, writer, driver);
-        getItemPrice(normalItem, writer, driver);
-        getHBPlusPrice(hbPlus, writer, driver);
+    private void getAllPrices(LinkedList<String> prices, PrintWriter writer) {
+        getItemPrice(prices, writer);
         writer.println();
     }
 
-    private void getHBPlusPrice(String hbPlus, PrintWriter writer, WebDriver driver) {
-        if (hbPlus.equals("+")) {
-            String hbPlusName = "HB+: ";
-            try {
-                String HBPlusSelector = "//div[@data-og-product='018232']/ancestor::table//td[contains(@class,'td price')]//p";
-                WebElement hbPrice = driver.findElement(By.xpath(HBPlusSelector));
-                writer.append(hbPlusName).append(hbPrice.getText()).append(" ");
-            } catch (org.openqa.selenium.WebDriverException e) {
-                writer.append(hbPlusName).append(": - ");
-                System.err.println("Couldn't get price for " + hbPlusName + ". Item isn't eligible for OG (selector).");
-            }
-        }
-    }
-
-    private void getItemPrice(String[] allItems, PrintWriter writer, WebDriver driver) {
-        if (!allItems[0].equals("-")) {
-            for (String itemId : allItems) {
-                try {
-                    String itemSelector = "//div[@data-og-product='" + itemId + "']/ancestor::tr//td[contains(@class,'td price')]//p[contains(@class,'label')]";
-                    WebElement itemPrice = driver.findElement(By.xpath(itemSelector));
-                    while (itemPrice.getText() == null || itemPrice.getText().equals(""))
-                        itemPrice = driver.findElement(By.xpath(itemSelector));
-                    writer.append(itemId).append(": ").append(itemPrice.getText()).append(" ");
-                } catch (org.openqa.selenium.WebDriverException e) {
-                    writer.append(itemId).append(": - ");
-                    System.err.println("Couldn't get price for " + itemId + ". Item isn't eligible for OG (selector).");
-                }
-            }
+    private void getItemPrice(LinkedList<String> prices, PrintWriter writer) {
+        for (String price : prices) {
+                writer.append(price);
         }
     }
 
@@ -82,12 +56,12 @@ public class OrderLogging extends Wait {
         writer.append("Total: ").append(orderTotal.getText()).append(" | ");
     }
 
-    public void success(int orderSequence, String hbPlus, String[] healthboxItem, String[] normalItem, WebDriver driver, OrderListing orderListing) {
+    public void success(int orderSequence, WebDriver driver, OrderListing orderListing, LinkedList<String> prices) {
         try {
             PrintWriter writer = writer(orderListing);
             writer.append(String.valueOf(orderSequence)).append(". ");
 
-            orderStuff(hbPlus, healthboxItem, normalItem, orderSequence, writer, driver, orderListing);
+            orderStuff(orderSequence, writer, driver, orderListing, prices);
             writer.close();
 
         } catch (IOException e) {

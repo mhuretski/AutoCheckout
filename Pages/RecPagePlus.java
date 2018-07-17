@@ -13,8 +13,10 @@ public class RecPagePlus extends Wait {
 
         new RecPage(site, driver);
         checkPlusPage(driver);
-        clearAllPills(driver);
-        addPills(pills, driver);
+        if (!pills[0].equals("-")) {
+            clearAllPills(driver);
+            addPills(pills, driver);
+        }
         checkOutOfStock(driver);
         oneTimeHBPlusIfNeeded(hbpRepeat, driver);
         addToBasket(driver);

@@ -17,7 +17,7 @@ public class Basket extends Wait{
     public Basket() {
     }
 
-    void open(String site, WebDriver driver) {
+    public void open(String site, WebDriver driver) {
         driver.get(new Site().chosenSite(site) + "basket/basket.jsp");
     }
 

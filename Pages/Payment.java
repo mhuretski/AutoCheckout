@@ -25,7 +25,7 @@ public class Payment extends Wait {
         waitClickableElem(driver, choosePayPal);
         waitClickableXpath(driver, payPalSelector);
         choosePayPal.click();
-
+        additionalButtons(driver);
         try {
             WebElement payNow = driver.findElement(By.cssSelector(".js-paypal-create-account-submit"));
             payNow.click();
@@ -40,25 +40,23 @@ public class Payment extends Wait {
         identificationOK.click();
     }
 
-    private void additionalButtons(String username, WebDriver driver) {
+    private void additionalButtons(WebDriver driver) {
         /*Depends on site configuration*/
         String termsXpath = "//input[@name='tc']";
         if (driver.findElements(By.xpath(termsXpath)).size() > 0) {
             try {
                 agreeToTerms(termsXpath, driver);
                 enterBillingSection(driver);
-                goToPayment(driver);
             } catch (org.openqa.selenium.WebDriverException ne) {
                 /*just skip*/
             }
         }
-        if (username.equals("g")) {
-            try {
-                goToPayment(driver);
-            } catch (org.openqa.selenium.WebDriverException ne) {
-                /*just skip*/
-            }
+        try {
+            goToPayment(driver);
+        } catch (org.openqa.selenium.WebDriverException ne) {
+            /*just skip*/
         }
+
 
     }
 
@@ -75,8 +73,7 @@ public class Payment extends Wait {
         waitLoaderAnimation(driver);
         guestCollectDetails(deliveryType, driver);
         waitLoaderAnimation(driver);
-        additionalButtons(username, driver);
-        switchToFrame(driver);
+        additionalButtons(driver);
         pay(username, driver);
     }
 
@@ -100,7 +97,18 @@ public class Payment extends Wait {
 
     }
 
-    private void payFast(WebDriver driver) {
+    private void payFast(boolean isNewUser, WebDriver driver) {
+
+        if (isNewUser) {
+            WebElement cardNumber = driver.findElement(By.cssSelector("input#payment-cardnumber"));
+            cardNumber.click();
+            cardNumber.sendKeys("4111111111111111");
+            driver.findElement(By.cssSelector("input#payment-cardholdername")).sendKeys("PETER CHEATER");
+            Select month = new Select(driver.findElement(By.cssSelector("select#payment-expirydate-month")));
+            month.selectByIndex(4);
+            Select year = new Select(driver.findElement(By.cssSelector("select#payment-expirydate-year")));
+            year.selectByIndex(4);
+        }
 
         driver.findElement(By.cssSelector("input#payment-cvc")).sendKeys("123");
 
@@ -134,22 +142,14 @@ public class Payment extends Wait {
     }
 
     private void pay(String username, WebDriver driver) {
-        enterCardCredentials(username, driver);
-        payFast(driver);
+        boolean isNewUser = enterCardCredentials(username, driver);
+        switchToFrame(driver);
+        payFast(isNewUser, driver);
     }
 
-    private void enterCardCredentials(String username, WebDriver driver) {
+    private boolean enterCardCredentials(String username, WebDriver driver) {
         /*for unsaved card or guest*/
-        if (driver.findElements(By.cssSelector(".checkout-fieldset-item .checkbox-label")).size() != 0 || username.equals("g")) {
-            WebElement cardNumber = driver.findElement(By.cssSelector("input#payment-cardnumber"));
-            cardNumber.click();
-            cardNumber.sendKeys("4111111111111111");
-            driver.findElement(By.cssSelector("input#payment-cardholdername")).sendKeys("PETER CHEATER");
-            Select month = new Select(driver.findElement(By.cssSelector("select#payment-expirydate-month")));
-            month.selectByIndex(4);
-            Select year = new Select(driver.findElement(By.cssSelector("select#payment-expirydate-year")));
-            year.selectByIndex(4);
-        }
+        return driver.findElements(By.cssSelector(".checkout-fieldset-item .checkbox-label")).size() != 0 || username.equals("g");
     }
 
 }
