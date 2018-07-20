@@ -106,7 +106,6 @@ public class Checkout extends Wait {
         String guest = "g";
         if (username.equals(guest)) {
             guestOrder(driver);
-//            chooseDeliveryForGuest(driver);
         }
         if ((driver.findElements(By.cssSelector("button.checkout-submit-btn")).size() == 0
                 || driver.findElements(By.id("checkout_form_postcode_lookup")).size() != 0)
@@ -115,10 +114,6 @@ public class Checkout extends Wait {
             firstOrder(username, driver);
             additionalButtons(driver);
         }
-    }
-
-    private void chooseDeliveryForGuest(WebDriver driver) {
-        driver.findElement(By.cssSelector("button.checkout-submit-btn.js-delivery-address-submit-button")).click();
     }
 
     private void additionalButtons(WebDriver driver) {

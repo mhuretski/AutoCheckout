@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderListing {
 
@@ -23,7 +24,7 @@ public class OrderListing {
     private String outputFolder;
     private ArrayList<String> orderNumbers = new ArrayList<>();
     private ArrayList<String> orderSequence = new ArrayList<>();
-    private ArrayList<ArrayList<String>> orders = new ArrayList<>();
+    private List<List<String>> orders = new ArrayList<>();
 
     void addOrderNumber(String orderNumber) {
         orderNumbers.add(orderNumber);
@@ -33,7 +34,7 @@ public class OrderListing {
         this.orderSequence.add(orderSequence);
     }
 
-    ArrayList<ArrayList<String>> getOrders() {
+    List<List<String>> getOrders() {
         orders.add(orderSequence);
         orders.add(orderNumbers);
         return orders;

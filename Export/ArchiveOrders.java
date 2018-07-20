@@ -14,9 +14,8 @@ public class ArchiveOrders {
     private void pushToArchive(OrderListing orderListing, OrderWriter orderWriter) {
 
         String zipFile = zipFileName(orderListing, orderWriter);
-        try {
+        try (FileOutputStream fileOutput = new FileOutputStream(zipFile)) {
             byte[] buffer = new byte[1024];
-            FileOutputStream fileOutput = new FileOutputStream(zipFile);
             addFileToArchive(buffer, fileOutput, orderListing, orderWriter);
 
         } catch (IOException e) {

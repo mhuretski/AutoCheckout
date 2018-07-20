@@ -27,11 +27,6 @@ public class Wait {
         driver.findElement(By.cssSelector(".pod-calc-progress-modal[style='display: none;']"));
     }
 
-    protected void waitXpathPresence(WebDriver driver, String xpathExpression) {
-        new WebDriverWait(driver, timeOut)
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpathExpression)));
-    }
-
     protected void waitCssPresence(WebDriver driver, String cssSelector) {
         new WebDriverWait(driver, timeOut)
                 .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(cssSelector)));
@@ -40,11 +35,6 @@ public class Wait {
     protected void waitAbsence(WebDriver driver, String cssSelector) {
         while (driver.findElements(By.cssSelector(cssSelector)).size() != 0)
             waitAbsence(driver, cssSelector);
-    }
-
-    protected void waitCssAbsence(WebDriver driver, String cssSelector) {
-        new WebDriverWait(driver, timeOut)
-                .until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(cssSelector)));
     }
 
     protected void waitClickableElem(WebDriver driver, WebElement webElement) {

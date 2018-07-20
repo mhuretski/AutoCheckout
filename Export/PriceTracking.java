@@ -4,13 +4,14 @@ import Pages.Basket;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PriceTracking {
 
     private String spaceWithDots = ": ";
     private String space = " ";
-    private LinkedList<String> priceForEachItem = new LinkedList<>();
+    private List<String> priceForEachItem = new ArrayList<>();
 
     public PriceTracking(String[] healthboxItem, String[] normalItem, String hbPlus, String site, WebDriver driver) {
         new Basket().open(site, driver);
@@ -21,7 +22,7 @@ public class PriceTracking {
 
     }
 
-    public LinkedList<String> getPriceForEachItem() {
+    public List<String> getPriceForEachItem() {
         return priceForEachItem;
     }
 

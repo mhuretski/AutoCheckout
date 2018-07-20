@@ -6,7 +6,8 @@ import com.opencsv.CSVReader;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ImportDataForOrders {
 
@@ -32,29 +33,28 @@ public class ImportDataForOrders {
 
     public ImportDataForOrders() {
 
-        LinkedList<String> orderSequenceList = new LinkedList<>();
-        LinkedList<String> healthboxList = new LinkedList<>();
-        LinkedList<String> healthboxItemList = new LinkedList<>();
-        LinkedList<String> healthboxItemQtyList = new LinkedList<>();
-        LinkedList<String> hbRepeatOrderList = new LinkedList<>();
-        LinkedList<String> normalItemList = new LinkedList<>();
-        LinkedList<String> normalItemQtyStringList = new LinkedList<>();
-        LinkedList<String> normalRepeatOrderList = new LinkedList<>();
-        LinkedList<String> hbPlusList = new LinkedList<>();
-        LinkedList<String> pillsList = new LinkedList<>();
-        LinkedList<String> hbpRepeatList = new LinkedList<>();
-        LinkedList<String> siteList = new LinkedList<>();
-        LinkedList<String> newLoyaltyUserList = new LinkedList<>();
-        LinkedList<String> loyaltyCardList = new LinkedList<>();
-        LinkedList<String> couponsList = new LinkedList<>();
-        LinkedList<String> deliveryTypeList = new LinkedList<>();
-        LinkedList<String> paymentTypeList = new LinkedList<>();
-        LinkedList<String> usernameList = new LinkedList<>();
-        LinkedList<String> passwordList = new LinkedList<>();
+        List<String> orderSequenceList = new ArrayList<>();
+        List<String> healthboxList = new ArrayList<>();
+        List<String> healthboxItemList = new ArrayList<>();
+        List<String> healthboxItemQtyList = new ArrayList<>();
+        List<String> hbRepeatOrderList = new ArrayList<>();
+        List<String> normalItemList = new ArrayList<>();
+        List<String> normalItemQtyStringList = new ArrayList<>();
+        List<String> normalRepeatOrderList = new ArrayList<>();
+        List<String> hbPlusList = new ArrayList<>();
+        List<String> pillsList = new ArrayList<>();
+        List<String> hbpRepeatList = new ArrayList<>();
+        List<String> siteList = new ArrayList<>();
+        List<String> newLoyaltyUserList = new ArrayList<>();
+        List<String> loyaltyCardList = new ArrayList<>();
+        List<String> couponsList = new ArrayList<>();
+        List<String> deliveryTypeList = new ArrayList<>();
+        List<String> paymentTypeList = new ArrayList<>();
+        List<String> usernameList = new ArrayList<>();
+        List<String> passwordList = new ArrayList<>();
 
         String csvFile = new SecureInputOutput().getInput();
-        try {
-            CSVReader reader = new CSVReader(new FileReader(csvFile));
+        try(CSVReader reader = new CSVReader(new FileReader(csvFile))) {
             String[] line;
             for (int i = 0; (line = reader.readNext()) != null; i++) {
                 if (i != 0) {
@@ -79,7 +79,6 @@ public class ImportDataForOrders {
                     passwordList.add(line[18]);
                 }
             }
-            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);

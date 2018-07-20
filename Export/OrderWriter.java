@@ -9,7 +9,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.List;
 
 public class OrderWriter {
 
@@ -23,7 +23,7 @@ public class OrderWriter {
             driver.get(admin.getAdminSite());
 
             /*get sequence, number and order XML*/
-            ArrayList<ArrayList<String>> orders = orderListing.getOrders();
+            List<List<String>> orders = orderListing.getOrders();
             getOrderXMLs(orders, admin, driver);
 
             writeOrderXMLs(orders, orderListing.getOutputFolder());
@@ -34,17 +34,17 @@ public class OrderWriter {
         driver.quit();
     }
 
-    private LinkedList<String> listOfFiles = new LinkedList<>();
+    private List<String> listOfFiles = new ArrayList<>();
 
-    LinkedList<String> getListOfFiles() {
+    List<String> getListOfFiles() {
         return listOfFiles;
     }
 
-    private void getOrderXMLs(ArrayList<ArrayList<String>> orders, SecureAdmin admin, WebDriver driver) {
+    private void getOrderXMLs(List<List<String>> orders, SecureAdmin admin, WebDriver driver) {
         String textAreaSelector = "textarea";
         String searchSelector = "input[type='submit']";
         String resultSelector = "pre code";
-        ArrayList<String> results = new ArrayList<>();
+        List<String> results = new ArrayList<>();
         for (int i = 0; i < orders.get(0).size(); i++) {
             /*RQL request*/
             searchForResult(i, orders, results, admin, textAreaSelector, searchSelector, resultSelector, driver);
@@ -52,8 +52,8 @@ public class OrderWriter {
         orders.add(results);
     }
 
-    private void searchForResult(int i, ArrayList<ArrayList<String>> orders,
-                                 ArrayList<String> results,
+    private void searchForResult(int i, List<List<String>> orders,
+                                 List<String> results,
                                  SecureAdmin admin,
                                  String textAreaSelector,
                                  String searchSelector,
@@ -70,7 +70,7 @@ public class OrderWriter {
             searchForResult(i, orders, results, admin, textAreaSelector, searchSelector, resultSelector, driver);
     }
 
-    private void writeOrderXMLs(ArrayList<ArrayList<String>> orders, String outputFolder) {
+    private void writeOrderXMLs(List<List<String>> orders, String outputFolder) {
 
         String space = ". ";
         String slash = "/";
@@ -80,17 +80,15 @@ public class OrderWriter {
 
             String fileName = orders.get(0).get(i) + space + orders.get(1).get(i) + fileExtension;
             listOfFiles.add(fileName);
-            try {
-                PrintWriter writer = new PrintWriter(outputFolder + slash + fileName, scn);
+            try (PrintWriter writer = new PrintWriter(outputFolder + slash + fileName, scn)) {
                 writer.print(getOrderXML(orders, i));
-                writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private String getOrderXML(ArrayList<ArrayList<String>> orders, int i) {
+    private String getOrderXML(List<List<String>> orders, int i) {
         /*split data with unnecessary info*/
         String[] dataList = orders.get(2).get(i).split("\\[");
         String order = "<order";

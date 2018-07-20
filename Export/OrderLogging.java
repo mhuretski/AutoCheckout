@@ -9,7 +9,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.LinkedList;
+import java.util.List;
 
 public class OrderLogging extends Wait {
 
@@ -20,7 +20,7 @@ public class OrderLogging extends Wait {
                         new FileWriter(orderListing.getOutputFolder() + "orders_details.txt", true)));
     }
 
-    private void orderStuff(int orderSequence, PrintWriter writer, WebDriver driver, OrderListing orderListing, LinkedList<String> prices) {
+    private void orderStuff(int orderSequence, PrintWriter writer, WebDriver driver, OrderListing orderListing, List<String> prices) {
         WebElement orderNumberElem = driver.findElement(By.cssSelector("span.order-number"));
         driver.findElement(By.cssSelector("i.ico-s.ico-expand.ico-20"))
                 .click();
@@ -35,14 +35,14 @@ public class OrderLogging extends Wait {
 
     }
 
-    private void getAllPrices(LinkedList<String> prices, PrintWriter writer) {
+    private void getAllPrices(List<String> prices, PrintWriter writer) {
         getItemPrice(prices, writer);
         writer.println();
     }
 
-    private void getItemPrice(LinkedList<String> prices, PrintWriter writer) {
+    private void getItemPrice(List<String> prices, PrintWriter writer) {
         for (String price : prices) {
-                writer.append(price);
+            writer.append(price);
         }
     }
 
@@ -56,13 +56,10 @@ public class OrderLogging extends Wait {
         writer.append("Total: ").append(orderTotal.getText()).append(" | ");
     }
 
-    public void success(int orderSequence, WebDriver driver, OrderListing orderListing, LinkedList<String> prices) {
-        try {
-            PrintWriter writer = writer(orderListing);
+    public void success(int orderSequence, WebDriver driver, OrderListing orderListing, List<String> prices) {
+        try (PrintWriter writer = writer(orderListing)) {
             writer.append(String.valueOf(orderSequence)).append(". ");
-
             orderStuff(orderSequence, writer, driver, orderListing, prices);
-            writer.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,11 +69,9 @@ public class OrderLogging extends Wait {
     }
 
     public void nonEmptiedBasket(int orderSequence, OrderListing orderListing) {
-        try {
-            PrintWriter writer = writer(orderListing);
+        try (PrintWriter writer = writer(orderListing)) {
             writer.append(String.valueOf(orderSequence)).append(" ")
                     .append("Basket might not be empty.").println("");
-            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
