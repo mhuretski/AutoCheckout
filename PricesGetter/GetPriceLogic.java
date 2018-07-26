@@ -24,9 +24,13 @@ class GetPriceLogic {
     }
 
     private void trackPrice(String sequence, String item, WebDriver driver) {
-        String priceText = driver.findElement(By.cssSelector("[data-sku-id=\"" + item + "\"] .clearfix .mobile-hidden .prod-size-price")).getText();
-        priceText = priceText.replace('\n', ' ');
-        this.price = sequence + "," + item + ":,\"" + priceText + "\"";
+        try {
+            String priceText = driver.findElement(By.cssSelector("[data-sku-id=\"" + item + "\"] .clearfix .mobile-hidden .prod-size-price")).getText();
+            priceText = priceText.replace('\n', ' ');
+            this.price = sequence + "," + item + ":,\"" + priceText + "\"";
+        } catch (org.openqa.selenium.NoSuchElementException ne){
+            this.price = sequence + "," + item + ":,\"Price not found\"";
+        }
     }
 
     String getPrice() {
