@@ -59,6 +59,7 @@ public class OrderWriter {
                                  String searchSelector,
                                  String resultSelector,
                                  WebDriver driver) {
+        /*sending RQL request to get specific data containing orderXML*/
         driver.findElement(By.cssSelector(textAreaSelector))
                 .sendKeys(admin.setRequestRQL(orders.get(1).get(i)));
         driver.findElement(By.cssSelector(searchSelector)).click();
