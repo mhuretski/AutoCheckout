@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 public class RecPagePlus extends Wait {
 
     public RecPagePlus(String[] pills, String site, String hbpRepeat, WebDriver driver) {
+        /*Turning OFF webservices that might generate errors*/
         SecureAdmin admin = new SecureAdmin();
         turnOffErrors(admin, driver);
 
@@ -22,6 +23,7 @@ public class RecPagePlus extends Wait {
         addToBasket(driver);
         validateHBPlus(driver);
 
+        /*Turning ON webservices*/
         turnOnErrors(admin, driver);
     }
 

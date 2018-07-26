@@ -12,6 +12,7 @@ import java.util.List;
 public class OrderListing {
 
     public OrderListing(){
+        /*path to generated folder which name contains date it's created*/
         outputFolder = new SecureInputOutput().getOutputFolder()
                 + new SimpleDateFormat("dd.MM.yy HH.mm").format(new java.util.Date()) + "/";
         try {

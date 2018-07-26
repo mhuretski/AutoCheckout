@@ -53,7 +53,7 @@ public class ImportDataForOrders {
         List<String> usernameList = new ArrayList<>();
         List<String> passwordList = new ArrayList<>();
 
-        String csvFile = new SecureInputOutput().getInput();
+        String csvFile = new SecureInputOutput().getInput(); /*path to file*/
         try(CSVReader reader = new CSVReader(new FileReader(csvFile))) {
             String[] line;
             for (int i = 0; (line = reader.readNext()) != null; i++) {
