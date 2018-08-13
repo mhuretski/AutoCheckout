@@ -54,7 +54,6 @@ public class RecPagePlus extends Wait {
                 System.out.println("Probably there are no OOS pills");
             }
         }
-
     }
 
     private void approveRemoval(WebDriver driver) {
