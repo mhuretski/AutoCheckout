@@ -1,7 +1,6 @@
 package Pages;
 
 import Logic.Wait;
-import Secured.SecureAdmin;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -60,18 +59,6 @@ public class RecPagePlus extends Wait {
         waitLoaderAnimation(driver);
         driver.findElement(By.cssSelector("button.hbp-popup-button-primary[type='submit']")).click();
         waitHBPLoaderAnimation(driver);
-    }
-
-    private void turnOffErrors(SecureAdmin admin, WebDriver driver) {
-        driver.get(admin.getCalc());
-        driver.findElement(By.cssSelector("input[value='true']")).click();
-        driver.findElement(By.cssSelector("input[type='submit']")).click();
-    }
-
-    private void turnOnErrors(SecureAdmin admin, WebDriver driver) {
-        driver.get(admin.getCalc());
-        driver.findElement(By.cssSelector("input[value='false']")).click();
-        driver.findElement(By.cssSelector("input[type='submit']")).click();
     }
 
     private void addPills(String[] pills, WebDriver driver) {
