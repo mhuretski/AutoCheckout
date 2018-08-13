@@ -26,6 +26,7 @@ public class Checkout {
 
     public Checkout(String site, WebDriver driver) {
         open(site, driver);
+        
         /*for first order*/
 //        chooseAddress(driver);
 //        chooseDeliveryButton(driver);
