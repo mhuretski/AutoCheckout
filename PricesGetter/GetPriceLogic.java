@@ -12,7 +12,7 @@ class GetPriceLogic {
 
     GetPriceLogic(String sequence, String itemId, String site, WebDriver driver) {
         searchForItem(itemId, site, driver);
-        trackPrice(sequence, itemId, driver);
+        trackPrice(sequence, itemId, site, driver);
     }
 
     private void searchForItem(String itemId, String site, WebDriver driver) {
@@ -23,13 +23,13 @@ class GetPriceLogic {
         searchField.sendKeys(Keys.ENTER);
     }
 
-    private void trackPrice(String sequence, String item, WebDriver driver) {
+    private void trackPrice(String sequence, String item, String site, WebDriver driver) {
         try {
             String priceText = driver.findElement(By.cssSelector("[data-sku-id=\"" + item + "\"] .clearfix .mobile-hidden .prod-size-price")).getText();
             priceText = priceText.replace('\n', ' ');
-            this.price = sequence + "," + item + ":,\"" + priceText + "\"";
+            this.price = sequence + "," + item + ":,\"" + priceText + "\"" + "," + site;
         } catch (org.openqa.selenium.NoSuchElementException ne){
-            this.price = sequence + "," + item + ":,\"Price not found\"";
+            this.price = sequence + "," + item + ":,\"Price not found\"" + "," + site;
         }
     }
 
