@@ -17,10 +17,11 @@ class InputValidation {
     }
 
     void validateDelivery(String[] deliveryType) {
-        String d = "d";
-        String c = "c";
+        String[] types = new String[]{"f", "d", "c"};
         for (String aDelivery : deliveryType) {
-            if (!(aDelivery.equals(d) || aDelivery.equals(c))) {
+            if (!(aDelivery.equals(types[0]) ||
+                    aDelivery.equals(types[1]) ||
+                    aDelivery.equals(types[2]))) {
                 System.err.println("Delivery hasn't passed validation. \n" +
                         "Delivery should \"d\" for delivery or \"c\" for collection. \n" +
                         "Check input file.");
@@ -30,10 +31,11 @@ class InputValidation {
     }
 
     void validatePayment(String[] paymentType) {
-        String p = "p";
-        String c = "c";
-        for (String aDelivery : paymentType) {
-            if (!(aDelivery.equals(p) || aDelivery.equals(c))) {
+        String[] types = new String[]{"f", "p", "c"};
+        for (String aPaymentType : paymentType) {
+            if (!(aPaymentType.equals(types[0]) ||
+                    aPaymentType.equals(types[1]) ||
+                            aPaymentType.equals(types[2]))) {
                 System.err.println("Payment hasn't passed validation. \n" +
                         "Payment should \"c\" for card or \"p\" for PayPal. \n" +
                         "Check input file.");

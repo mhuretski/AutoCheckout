@@ -34,12 +34,11 @@ public class OrderCreation {
         new Login(username, password, site, driver);
 
         /*add healthbox items*/
+        if (hbPlus.equals("+"))
+            new RecPagePlus(pills, site, hbpRepeat, driver);
         boolean isHealthbox = healthbox == 1 || healthbox == 3 || healthbox == 4;
         if (isHealthbox || healthboxItem.length == 1 && !healthboxItem[0].equals("-"))
             new RecPage(healthbox, healthboxItem, site, driver);
-        if (hbPlus.equals("+")) {
-            new RecPagePlus(pills, site, hbpRepeat, driver);
-        }
 
         /*change qTy of healthbox items*/
         boolean multipleHealthboxItems = false;

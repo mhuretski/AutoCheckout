@@ -9,12 +9,18 @@ import org.openqa.selenium.support.ui.Select;
 public class Payment extends Wait {
 
     public Payment(String deliveryType, String username, String paymentType, WebDriver driver) {
-        choosePaymentType(deliveryType, username, paymentType, driver);
+        if (paymentType.equals("f")) payFast(driver);
+        else choosePaymentType(deliveryType, username, paymentType, driver);
     }
 
     private void choosePaymentType(String deliveryType, String username, String paymentType, WebDriver driver) {
-        if (paymentType.equals("c"))
-            payByCard(deliveryType, username, driver);
+        if (paymentType.equals("c")) {
+            if (driver.findElements(By.cssSelector(".pmBcard[name='brandName']")).size() > 0)
+                adyenPayment(driver);
+            else {
+                payByCard(deliveryType, username, driver);
+            }
+        }
         else payByPayPal(driver);
     }
 
@@ -97,7 +103,7 @@ public class Payment extends Wait {
 
     }
 
-    private void payFast(boolean isNewUser, WebDriver driver) {
+    private void enterCard(boolean isNewUser, WebDriver driver) {
 
         if (isNewUser) {
             WebElement cardNumber = driver.findElement(By.cssSelector("input#payment-cardnumber"));
@@ -141,10 +147,28 @@ public class Payment extends Wait {
         }
     }
 
+    private void payFast(WebDriver driver) {
+        switchToFrame(driver);
+        driver.findElement(By.cssSelector("input#payment-cvc")).sendKeys("737");
+
+        String submitButton = "input#payment-submit";
+        waitCssPresence(driver, submitButton);
+        waitClickableCSS(driver, submitButton);
+        driver.findElement(By.cssSelector(submitButton)).click();
+
+        driver.switchTo().defaultContent();
+    }
+
     private void pay(String username, WebDriver driver) {
         boolean isNewUser = enterCardCredentials(username, driver);
-        switchToFrame(driver);
-        payFast(isNewUser, driver);
+            switchToFrame(driver);
+            enterCard(isNewUser, driver);
+    }
+
+    private void adyenPayment(WebDriver driver){
+        driver.findElement(By.cssSelector(".pmBcard[name='brandName']")).click();
+        driver.findElement(By.name("card.cvcCode")).sendKeys("737");
+        driver.findElement(By.cssSelector(".paySubmitcard")).click();
     }
 
     private boolean enterCardCredentials(String username, WebDriver driver) {

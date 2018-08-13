@@ -12,7 +12,6 @@ public class RecPage {
         openHLP(site, driver);
         openRecsPage(driver);
         whatHealthbox(healthbox, itemId, driver);
-
     }
 
     RecPage(String site, WebDriver driver) {

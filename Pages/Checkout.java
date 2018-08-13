@@ -7,14 +7,21 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.List;
+
 
 public class Checkout extends Wait {
 
     public Checkout(String username, String deliveryType, String site, WebDriver driver) {
         open(site, driver);
-        guestUser(username, driver);
-        deliveryOrCollection(username, deliveryType, driver);
-        continueToPayment(username, deliveryType, driver);
+        if (!deliveryType.equals("f")) {
+            guestUser(username, driver);
+            deliveryOrCollection(username, deliveryType, driver);
+            continueToPayment(username, deliveryType, driver);
+            adyenContinue(driver);
+        } else {
+            continueFast(driver);
+        }
     }
 
     private void guestUser(String username, WebDriver driver) {
@@ -58,7 +65,8 @@ public class Checkout extends Wait {
                 WebElement chooseStandardDeliveryTime = driver.findElement(By.cssSelector(".checkout-delivery-choose-option .section"));
                 chooseStandardDeliveryTime.click();
                 waitLoaderAnimation(driver);
-            } while (driver.findElements(By.cssSelector(".checkout-submit-btn.js-checkout-collection-details-submit")).size() == 0);
+            }
+            while (driver.findElements(By.cssSelector(".checkout-submit-btn.js-checkout-collection-details-submit")).size() == 0);
         } catch (org.openqa.selenium.NoSuchElementException ne) {
             System.err.println("Can't click \"Continue to payment\"" + ne);
         }
@@ -99,6 +107,13 @@ public class Checkout extends Wait {
             } catch (org.openqa.selenium.NoSuchElementException ne) {
                 /*just skip*/
             }
+        }
+    }
+
+    private void adyenContinue(WebDriver driver) {
+        List<WebElement> adyen = driver.findElements(By.xpath("//div[not(contains(@class,'hidden'))]/div/button[contains(@class,'js-adyen-payment-submit')]"));
+        if (adyen.size() > 0) {
+            adyen.get(0).click();
         }
     }
 
@@ -187,6 +202,14 @@ public class Checkout extends Wait {
         driver.get(new Site().chosenSite(site) + "checkout/checkout.jsp");
     }
 
+    private void continueFast(WebDriver driver) {
+        String continuePaymentCSS = "button.checkout-submit-btn.js-delivery-option-submit-button";
+        waitLoaderAnimation(driver);
+        WebElement continuePayment = driver.findElement(By.cssSelector(continuePaymentCSS));
+        continuePayment.click();
+        waitLoaderAnimation(driver);
+    }
+
     private void continueToPayment(String username, String deliveryType, WebDriver driver) {
         if (username.equals("g") && deliveryType.equals("c"))
             userDetailsGuest(driver);
@@ -209,7 +232,6 @@ public class Checkout extends Wait {
             }
         }
         waitLoaderAnimation(driver);
-
     }
 
     private void userDetailsGuest(WebDriver driver) {

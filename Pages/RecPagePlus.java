@@ -3,17 +3,18 @@ package Pages;
 import Logic.Wait;
 import Secured.SecureAdmin;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import static java.lang.Thread.sleep;
 
 public class RecPagePlus extends Wait {
 
     public RecPagePlus(String[] pills, String site, String hbpRepeat, WebDriver driver) {
-        /*Turning OFF webservices that might generate errors*/
-        SecureAdmin admin = new SecureAdmin();
-        turnOffErrors(admin, driver);
-
         new RecPage(site, driver);
         checkPlusPage(driver);
+//        deleteBadPill(site, driver);
         if (!pills[0].equals("-")) {
             clearAllPills(driver);
             addPills(pills, driver);
@@ -22,9 +23,6 @@ public class RecPagePlus extends Wait {
         oneTimeHBPlusIfNeeded(hbpRepeat, driver);
         addToBasket(driver);
         validateHBPlus(driver);
-
-        /*Turning ON webservices*/
-        turnOnErrors(admin, driver);
     }
 
     private String addPillSelector = ".hpb-pill-click-to-add";
@@ -86,15 +84,43 @@ public class RecPagePlus extends Wait {
             waitLoaderAnimation(driver);
             driver.findElement(By.cssSelector(addPillSelector)).click();
             waitLoaderAnimation(driver);
-            try {
+            if (driver.findElements(By.cssSelector(pillSelectorStart + pillId + pillSelectorEnd)).size() != 0)
                 driver.findElement(By.cssSelector(pillSelectorStart + pillId + pillSelectorEnd)).click();
-            } catch (org.openqa.selenium.NoSuchElementException ne) {
-                System.out.println("Pill " + pillId + "doesn't exist.");
+            else try {
+                WebElement search = driver.findElement(By.cssSelector("input[type='text']"));
+                search.sendKeys(pillId);
+                search.sendKeys(Keys.ENTER);
+                WebElement addPillBtn = driver.findElement(By.cssSelector(pillSelectorStart + pillId + pillSelectorEnd));
+                addPillBtn.click();
+                if (driver.findElements(By.cssSelector(pillSelectorStart + pillId + pillSelectorEnd)).size() > 0)
+                    addPillBtn.click();
+            } catch (org.openqa.selenium.WebDriverException we) {
+                System.out.println("no scroll or no item " + pillId);
+                we.printStackTrace();
+            }
+            if (driver.findElements(By.cssSelector(".hbp-popup-button-link[type='submit']")).size() > 0){
+                try {
+                    waitLoaderAnimation(driver);
+                    sleep(3001);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                driver.findElement(By.cssSelector(".hbp-popup-button-link[type='submit']")).click();
             }
             /*waitAbsence works faster than explicit wait*/
             waitAbsence(driver, searchWindow);
         }
 
+    }
+
+    private void deleteBadPill(String site, WebDriver driver) {
+        String badPillSelector = " //a[@data-hb-sku-id='019377']/ancestor::div[contains(@class,'hbp-pills-list-item hbp-pill')]//button[contains(@class,'hbp-pill-button hbp-pill-button-remove')]";
+        if (driver.findElements(By.xpath(badPillSelector)).size() > 0) {
+            driver.findElement(By.xpath(badPillSelector)).click();
+            waitLoaderAnimation(driver);
+            driver.findElement(By.cssSelector("button.hbp-popup-button-primary[type='submit']")).click();
+            new RecPage(site, driver);
+        }
     }
 
     private void clearAllPills(WebDriver driver) {
