@@ -1,10 +1,9 @@
 package Export;
 
-import Logic.DriverTiming;
+import Logic.Driver;
 import Secured.SecureAdmin;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,8 +13,7 @@ import java.util.List;
 public class OrderWriter {
 
     public OrderWriter(OrderListing orderListing) {
-        WebDriver driver = new ChromeDriver();
-        new DriverTiming(2, driver);
+        WebDriver driver = new Driver().startDriver(2);
 
         try {
             /*open admin site*/

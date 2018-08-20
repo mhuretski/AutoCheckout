@@ -1,11 +1,10 @@
 package Pages;
 
-import Logic.DriverTiming;
+import Logic.Driver;
 import Logic.Site;
 import Logic.Wait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 public class Basket extends Wait{
 
@@ -35,8 +34,7 @@ public class Basket extends Wait{
     }
 
     public void remove(String username, String password, String site) {
-        WebDriver driver = new ChromeDriver();
-        new DriverTiming(4, driver);
+        WebDriver driver = new Driver().startDriver(4);
         removeItems(username, password, site, driver);
         driver.quit();
     }

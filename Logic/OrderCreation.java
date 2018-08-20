@@ -30,7 +30,6 @@ public class OrderCreation {
                          WebDriver driver,
                          OrderListing orderListing) {
 
-        new DriverTiming(3, driver);
         new Login(username, password, site, driver);
 
         /*add healthbox items*/

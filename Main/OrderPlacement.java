@@ -5,16 +5,14 @@ import Export.OrderListing;
 import Export.OrderWriter;
 import Import.ImportDataForOrders;
 import Logic.CreationTime;
+import Logic.Driver;
 import Logic.ErrorHandling;
 import Logic.OrderCreation;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-
 
 public class OrderPlacement {
 
     public static void main(String[] args) {
-
         CreationTime executeTime = new CreationTime();
         executeTime.setStartTime();
 
@@ -25,7 +23,7 @@ public class OrderPlacement {
         int i = 0;
         for (; i < data.getOrderSequence().length; i++) {
             if (amountOfAttemptsBeforeExit >= 0) {
-                WebDriver driver = new ChromeDriver();
+                WebDriver driver = new Driver().startDriver(3);
                 try {
                     new OrderCreation(
                             data.getOrderSequence()[i],
