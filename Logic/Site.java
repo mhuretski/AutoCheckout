@@ -11,4 +11,5 @@ public class Site {
     public void open(String site, WebDriver driver) {
         driver.get(chosenSite(site));
     }
+
 }

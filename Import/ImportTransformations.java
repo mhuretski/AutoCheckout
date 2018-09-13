@@ -1,10 +1,10 @@
-package Logic;
+package Import;
 
 import java.util.List;
 
-public class ImportTransformations {
+class ImportTransformations {
 
-    public int[][] transformToArrayTwoInt(List<String> arrayList) {
+    int[][] transformToArrayTwoInt(List<String> arrayList) {
 
         String[][] arrayString = transformToArrayTwo(arrayList);
         int[][] arrayInt = new int[arrayString.length][];
@@ -17,7 +17,7 @@ public class ImportTransformations {
         return arrayInt;
     }
 
-    public int[] transformToArrayOneInt(List<String> arrayList) {
+    int[] transformToArrayOneInt(List<String> arrayList) {
         String[] arrayString = transformToArrayOneString(arrayList);
         int[] arrayInt = new int[arrayString.length];
         for (int i = 0; i < arrayString.length; i++) {
@@ -26,7 +26,7 @@ public class ImportTransformations {
         return arrayInt;
     }
 
-    private String[][] transformToArrayTwo(List<String> arrayList) {
+    String[][] transformToArrayTwo(List<String> arrayList) {
         String[][] array = new String[arrayList.size()][1];
         fromListToArray(array, arrayList);
         return splitArrayCells(array);
@@ -45,14 +45,12 @@ public class ImportTransformations {
             String[] split = array[i][0].split(", ");
             tempArray[i] = new String[split.length];
 
-            for (int j = 0; j < split.length; j++) {
-                tempArray[i][j] = split[j];
-            }
+            System.arraycopy(split, 0, tempArray[i], 0, split.length);
         }
         return tempArray;
     }
 
-    public String[][] transformToArrayTwoWithZeros(List<String> arrayList){
+    String[][] transformToArrayTwoWithZeros(List<String> arrayList){
         String[][] arrayString = transformToArrayTwo(arrayList);
         ZerosBeforeItemId addZeros = new ZerosBeforeItemId();
         for (int i = 0; i < arrayString.length; i++) {
@@ -63,7 +61,7 @@ public class ImportTransformations {
         return arrayString;
     }
 
-    public String[] transformToArrayOneString(List<String> arrayList) {
+    String[] transformToArrayOneString(List<String> arrayList) {
         String[] array = new String[arrayList.size()];
         fromListToArray(array, arrayList);
         return array;
@@ -72,15 +70,6 @@ public class ImportTransformations {
     private void fromListToArray(String[] array, List<String> arrayList) {
         for (int i = 0; i < array.length; i++) {
             array[i] = arrayList.get(i);
-        }
-    }
-
-    private void showArray(String[][] array){
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                System.out.print(array[i][j] + " ");
-            }
-            System.out.println("");
         }
     }
 

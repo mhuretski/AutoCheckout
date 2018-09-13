@@ -1,73 +1,67 @@
 package Pages;
 
-import ImportExport.OrderLogging;
+import Logic.Driver;
 import Logic.Site;
+import Logic.Wait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.io.IOException;
-
-import static java.lang.Thread.sleep;
-
-public class Basket {
-
-    private int attemptsToClearBasket = 0;
-
-    void open(String site, WebDriver driver) {
-        driver.get(new Site().chosenSite(site) + "basket/basket.jsp");
-    }
-
-    private void addItem(String[] healthboxItem, int[] healthboxItemQty, WebDriver driver) {
-
-        for (int i = 0; i < healthboxItem.length; i++) {
-            WebElement itemQty = driver.findElement(By.xpath("//span[starts-with(., '" + healthboxItem[i] + "')]/ancestor::article//dl[contains(@class, 'l-col quantity mobile-hidden')]//button[@type='button'][contains(@class, 'plus')]"));
-            for (int j = 0; j < healthboxItemQty[i] - 1; j++)
-                itemQty.click();
-        }
-
-    }
-
-    public void remove(String site, int orderSequence) throws IOException, InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        removeItems(site, orderSequence, driver);
-        driver.quit();
-    }
-
-    private void removeItems(String site, int orderSequence, WebDriver driver) throws InterruptedException, IOException {
-
-        open(site, driver);
-        if (isBasketNotEmpty(driver)) {
-            open(site, driver);
-            if (isBasketNotEmpty(driver)) {
-                WebElement itemsToRemove = driver.findElement(By.xpath("//dl[contains(@class, 'l-col quantity mobile-hidden')]//a[contains(@class,'act-remove removeCartItem')]"));
-                itemsToRemove.click();
-                sleep(3000);
-                this.attemptsToClearBasket++;
-                try {
-                    if (this.attemptsToClearBasket < 10) {
-                        removeItems(site, orderSequence, driver);
-                    }
-                } catch (Exception e) {
-                    System.err.println("Basket isn't cleaned");
-                    new OrderLogging("fail", orderSequence, driver);
-                    System.exit(1);
-                }
-            }
-        }
-    }
-
-    private boolean isBasketNotEmpty(WebDriver driver) {
-        boolean wtf = driver.findElements(By.cssSelector(".s-basket.s-basket-empty")).size() != 0;
-        return !wtf;
-    }
+public class Basket extends Wait{
 
     public Basket(String[] healthboxItem, int[] healthboxItemQty, String site, WebDriver driver) {
         open(site, driver);
-        addItem(healthboxItem, healthboxItemQty, driver);
+        addHealthboxItem(healthboxItem, healthboxItemQty, driver);
     }
 
     public Basket() {
     }
+
+    public void open(String site, WebDriver driver) {
+        driver.get(new Site().chosenSite(site) + "basket/basket.jsp");
+    }
+
+    private void addHealthboxItem(String[] healthboxItem, int[] healthboxItemQty, WebDriver driver) {
+
+        for (int i = 0; i < healthboxItem.length; i++) {
+
+            for (int j = 0; j < healthboxItemQty[i] - 1; j++) {
+                driver.findElement(By.xpath("//span[starts-with(., '" + healthboxItem[i] + "')]/ancestor::article//dl[contains(@class, 'l-col quantity mobile-hidden')]//button[@type='button'][contains(@class, 'plus')]"))
+                        .click();
+                waitLoaderAnimation(driver);
+            }
+        }
+
+    }
+
+    public void remove(String username, String password, String site) {
+        WebDriver driver = new Driver().startDriver(4);
+        removeItems(username, password, site, driver);
+        driver.quit();
+    }
+
+    private void removeItems(String username, String password, String site, WebDriver driver) {
+
+        do {
+            open(site, driver);
+        }
+        while (driver.findElements(By.xpath("//pre[text()[contains(.,'Your session expired due to inactivity')]]")).size() != 0);
+
+        if (driver.findElements(By.cssSelector("a.lnk-not-you")).size() == 0)
+            new Login(username, password, site, driver);
+
+        open(site, driver);
+        new Loyalty().removeLoyaltyCard(driver);
+
+        while (isBasketEmpty(driver)) {
+            driver.findElement(By.cssSelector("dl.l-col.quantity.mobile-hidden a.act-remove.removeCartItem"))
+                    .click();
+            waitLoaderAnimation(driver);
+
+        }
+    }
+
+    private boolean isBasketEmpty(WebDriver driver) {
+        return driver.findElements(By.cssSelector("section.s-basket-empty")).size() == 0;
+    }
+
 }
